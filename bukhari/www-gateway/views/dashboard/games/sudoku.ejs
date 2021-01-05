@@ -1,0 +1,22 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([
+    `<link rel="stylesheet" href="/st/css/games/sudoku.css" />`
+].join('')) %>
+<% block('scripts').append([
+    `<script src="/st/js/games/sudoku.js"></script>`
+].join('')) %>
+
+<main class="h-full pb-16 overflow-y-auto">
+    <div class="container py-7 px-6 max-w-7xl ml-4 grid">
+        <h1 id="sudoku_title">ՍՈՒԴՈԿՈՒ</h1>
+
+        <div id="sudoku_menu">
+            <ul>
+                <li><a class="restart" href="#">Նոր Խաղ</a></li>
+                <li></li>
+            </ul>
+        </div>
+
+        <div id="sudoku_container"></div>
+    </div>
+</main>

@@ -1,0 +1,8 @@
+location /st/ {
+    alias /var/bukhari/public/;
+    autoindex off;
+}
+
+location / {
+  proxy_pass http://www-gateway;
+}

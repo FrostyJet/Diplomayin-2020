@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  nginx:
+    #logging:
+    #  driver: none
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+      - ./nginx/service.locations:/etc/nginx/conf.d/service.locations
+
+  www-gateway:
+    volumes:
+      - ./www-gateway:/usr/src/app
+      - /usr/src/app/node_modules
+    command: 'npm run start:debug'

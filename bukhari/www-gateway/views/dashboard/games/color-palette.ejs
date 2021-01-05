@@ -1,0 +1,45 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([
+    `<link rel="stylesheet" href="/st/css/games/color-palette.css" />`
+].join('')) %>
+<% block('scripts').append([
+    `<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"> </script> `,
+    `<script src="/st/js/games/color-palette.js"></script>`
+].join('')) %>
+
+<main>
+    <div class="container">
+        <div class="directions">
+            <p><strong>Ինչպես խաղալ:</strong> Օգտագործեք ստեղնաշարի սլաքները, արկղիկները տեղաշարժելու համար. Երբ երկու նույնարժեք արկղիկ սահեն միմյանց վրա, նրանք կմիավորվեն</p>
+        </div>
+        <div class="scores">
+            <div class="score-container best-score">
+                Լավագույնը:
+                <div class="score">
+                    <div id="bestScore">0</div>
+                </div>
+            </div>
+            <div class="score-container">
+                Միավոր:
+                <div class="score">
+                    <div id="score">0</div>
+                    <div class="add" id="add"></div>
+                </div>
+            </div>
+        </div>
+        <div class="game">
+            <div id="tile-container" class="tile-container"></div>
+            <div class="end" id="end">Խաղն ավարտվեց
+                <div class="monkey">🙈</div>
+                <button class="btn not-recommended__item js-restart-btn" id="try-again">Կրկին փորձել</button>
+            </div>
+        </div>
+
+        <div class="not-recommended">
+            <button class="btn not-recommended__item js-restart-btn" id="restart">Վերսկսել</button>
+            <span class="not-recommended__annotation"></span>
+        </div>
+
+    </div>
+
+</main>

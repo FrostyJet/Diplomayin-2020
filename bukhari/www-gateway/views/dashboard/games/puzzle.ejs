@@ -1,0 +1,24 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([
+    `<link rel="stylesheet" href="/st/css/games/puzzle.css" />`
+].join('')) %>
+<% block('scripts').append([
+    `<script src="/st/js/games/puzzle.js"></script>`
+].join('')) %>
+
+<main class="h-full py-16 overflow-y-auto">
+    <div class="game max-w-7xl">
+        <p class="text-4xl mb-16">Կատարված քայլեր: <span id="moves">0</span> - Օգտագործիր ստեղնաշարի սլաքները, քայլ կատարելու համար</p>
+
+        <div class="canvas"></div>
+
+        <div class="win">
+            <p>Դու հաղթեցիր, կեցցե՛ս !</p>
+            <a class="btn" href="#">Վերսկսել</a>
+        </div>
+
+        <p class="mt-16">
+            <a onclick="window.location.reload(false)" class="py-3 px-6 rounded-lg bg-yellow-500 font-semibold" href="#">Նոր խաղ</a>
+        </p>
+    </div>
+</main>

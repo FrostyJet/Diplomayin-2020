@@ -1,0 +1,15 @@
+.filepond--root,
+.filepond--root .filepond--drop-label {
+    min-height: 200px;
+    cursor: pointer;
+}
+
+.dismiss-avatar {
+    top: 20px;
+    transition: 300ms;
+    transform: translateY(-80px);
+}
+
+.image-wrapper:hover .dismiss-avatar {
+    transform: translateY(0);
+}

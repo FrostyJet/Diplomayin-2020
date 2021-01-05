@@ -1,0 +1,139 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 70px;
+    text-shadow: 2px 2px 7px #6EAFD9;
+    text-transform: uppercase;
+}
+
+.memory-game {
+    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+}
+
+.memory-card {
+    width: 200px;
+    height: calc(33.333% - 10px);
+    margin: 5px;
+    position: relative;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition: transform 0.5s;
+    transition: transform 0.5s;
+    cursor: pointer;
+}
+
+.memory-card:active {
+    -webkit-transform: scale(0.97);
+    transform: scale(0.97);
+    -webkit-transition: transform 0.2s;
+    transition: transform 0.2s;
+}
+
+.front-face,
+.back-face {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    position: absolute;
+    border-radius: 5px;
+    background-color: rgba(44, 114, 141, 1.00);
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.front-face {
+    -webkit-backface-visibility: visible;
+    -moz-backface-visibility: visible;
+    backface-visibility: visible;
+}
+
+.flip {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+}
+
+#youWin {
+    display: none;
+    max-width: 450px;
+    padding: 35px;
+    position: absolute;
+    margin-top: 40px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    background-color: rgba(255, 198, 0, 1.00);
+    text-align: center;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 black;
+}
+
+#youWin button {
+    width: 140px;
+    color: #fff;
+    margin-top: 10px;
+    font-family: 'Boogaloo', cursive;
+    font-size: 28px;
+    text-transform: uppercase;
+    background-color: rgba(44, 114, 141, 1.00);
+    border-radius: 5px;
+}
+
+/* RESPONSIVE */
+@media screen and (max-width: 650px) {
+    body {
+        justify-content: flex-start;
+    }
+
+    h1 {
+        font-size: 40px;
+        text-shadow: 2px 2px 7px #6EAFD9;
+    }
+
+    .memory-game {
+        width: 310px;
+        height: 500px;
+        margin: 20px auto;
+    }
+
+    .memory-card {
+        width: calc(25% - 5px);
+        height: calc(33.333% - 5px);
+        margin: 2.5px;
+    }
+
+    .front-face,
+    .back-face {
+        padding: 8px;
+    }
+
+    #youWin {
+        width: 290px;
+        height: 90px;
+        position: absolute;
+        top: 280px;
+        margin-top: 0;
+        display: flex;
+        font-size: 25px;
+    }
+
+    #youWin button {
+        margin-top: 0;
+        font-size: 20px;
+    }
+}

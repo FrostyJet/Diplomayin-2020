@@ -1,0 +1,21 @@
+.shape {
+    background: #ffe79c;
+    border-radius: 30% 70% 70% 30% / 30% 40% 60% 70%;
+    position: fixed;
+    z-index: -1;
+}
+
+.shape--top {
+    right: -70px;
+    top: -198px;
+    width: 550px;
+    height: 300px;
+}
+
+.shape--bottom {
+    width: 700px;
+    height: 510px;
+    left: -211px;
+    bottom: -250px;
+    transform: rotate(15deg);
+}

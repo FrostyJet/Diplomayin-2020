@@ -1,0 +1,41 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([
+    `<link rel="stylesheet" href="/st/css/games/memory.css" />`
+].join('')) %>
+<% block('scripts').append([
+    `<script src="/st/js/games/memory.js"></script>`
+].join('')) %>
+<%
+let images = [
+    { id: 'lion', src: '/st/img/games/memory/lion.svg' },
+    { id: 'sheep', src: '/st/img/games/memory/sheep.svg' },
+    { id: 'cat', src: '/st/img/games/memory/cat.svg' },
+    { id: 'pig', src: '/st/img/games/memory/pig.svg' },
+    { id: 'bee', src: '/st/img/games/memory/bee.svg' },
+    { id: 'boar', src: '/st/img/games/memory/boar.svg' },
+    { id: 'panda', src: '/st/img/games/memory/panda.svg' },
+    { id: 'lama', src: '/st/img/games/memory/lama.svg' },
+    { id: 'parrot', src: '/st/img/games/memory/parrot.svg' },
+    { id: 'elephant', src: '/st/img/games/memory/elephant.svg' },
+];
+
+images = [...images, ...images];
+%>
+
+<main class="h-full pb-16 overflow-y-auto relative">
+    <section class="memory-game h-full flex justify-center">
+        <% images.forEach(image => { %>
+            <div class="memory-card " data-card="<%= image.id %>">
+                <img class="front-face"
+                     src="<%= image.src %>"/>
+                <img class="back-face"
+                     src="data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNTEyIDUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48bGluZWFyR3JhZGllbnQgaWQ9IlNWR0lEXzFfIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAiIHgyPSI1MTIiIHkxPSIyNTYiIHkyPSIyNTYiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZmZGU1NSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2ZmZWRhMSIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJTVkdJRF8yXyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIHgxPSIxMTMuMzc4IiB4Mj0iMzk4LjYyMiIgeTE9IjI1NiIgeTI9IjI1NiI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZiMDAwIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZmZjZDAwIi8+PC9saW5lYXJHcmFkaWVudD48cGF0aCBkPSJtNTAwLjk0MSAyNzYuNjY1LTM3LjYwOSAyNS4wNzJjLTEyLjc5MyA4LjUyOC0xOC4wNTYgMjQuNzI1LTEyLjcxOSAzOS4xNDRsMTUuNjg3IDQyLjM4OWM2LjE1MiAxNi42MjUtNi41OTMgMzQuMTU4LTI0LjMwNSAzMy40MzVsLTQ1LjE1Ny0xLjg0M2MtMTUuMzc5LS42MjgtMjkuMTczIDkuMzk4LTMzLjMyMyAyNC4yMmwtMTIuMTcxIDQzLjQ3MWMtNC43ODMgMTcuMDg0LTI1LjQxOSAyMy43ODktMzkuMzMgMTIuNzc4bC0zNS40MTItMjguMDI4Yy0xMi4wNzMtOS41NTYtMjkuMTMzLTkuNTU2LTQxLjIwNiAwbC0zNS40MTEgMjguMDI4Yy0xMy45MTEgMTEuMDEtMzQuNTQ2IDQuMzA2LTM5LjMzLTEyLjc3OGwtMTIuMTcxLTQzLjQ3MmMtNC4xNS0xNC44MjItMTcuOTQzLTI0Ljg0OC0zMy4zMjMtMjQuMjJsLTQ1LjE1NyAxLjg0M2MtMTcuNzEyLjcyMy0zMC40NTctMTYuODEtMjQuMzA1LTMzLjQzNWwxNS42ODctNDIuMzg5YzUuMzM2LTE0LjQxOS4wNzMtMzAuNjE2LTEyLjcxOS0zOS4xNDRsLTM3LjYwOS0yNS4wNzJjLTE0Ljc0Ni05LjgzMS0xNC43NDYtMzEuNDk5IDAtNDEuMzI5bDM3LjYwOS0yNS4wNzJjMTIuNzkzLTguNTI4IDE4LjA1Ni0yNC43MjUgMTIuNzE5LTM5LjE0NGwtMTUuNjg1LTQyLjM4OWMtNi4xNTItMTYuNjI1IDYuNTkzLTM0LjE1OCAyNC4zMDUtMzMuNDM1bDQ1LjE1NyAxLjg0M2MxNS4zNzkuNjI4IDI5LjE3My05LjM5OCAzMy4zMjItMjQuMjJsMTIuMTcxLTQzLjQ3MWM0Ljc4My0xNy4wODQgMjUuNDE5LTIzLjc4OSAzOS4zMy0xMi43NzhsMzUuNDEyIDI4LjAyOGMxMi4wNzMgOS41NTYgMjkuMTMzIDkuNTU2IDQxLjIwNiAwbDM1LjQxMi0yOC4wMjhjMTMuOTExLTExLjAxIDM0LjU0Ny00LjMwNiAzOS4zMyAxMi43NzhsMTIuMTcxIDQzLjQ3MmM0LjE1IDE0LjgyMiAxNy45NDMgMjQuODQ4IDMzLjMyMyAyNC4yMmw0NS4xNTctMS44NDNjMTcuNzEyLS43MjMgMzAuNDU3IDE2LjgxIDI0LjMwNSAzMy40MzVsLTE1LjY4NyA0Mi4zODljLTUuMzM2IDE0LjQxOS0uMDczIDMwLjYxNiAxMi43MTkgMzkuMTQ0bDM3LjYwOSAyNS4wNzJjMTQuNzQ0IDkuODMgMTQuNzQ0IDMxLjQ5OC0uMDAyIDQxLjMyOXoiIGZpbGw9InVybCgjU1ZHSURfMV8pIi8+PHBhdGggZD0ibTEwMi45MjEgMzAzLjY5NGMtOS4zNDMgMy45MjItMTMuMzk5IDE1LjA0Ni05LjI3OSAyNC4zMDIgMTguOTU5IDQyLjU5IDU0LjE5NCA3Ni4zOTYgOTcuNzYyIDkzLjQ2NSAxMC4zNTUgNC4wNTcgMjIuNjY3LTIuNDUxIDI0LjY4MS0xMi42NDVzLTIuMzc5LTE4Ljc2OC0xMS4wNDEtMjIuMjI5Yy0yMC4yNzQtOC4wOTktNTUuNjc3LTI4LjE4NS03Ni4zMTMtNzQuMTIzLTQuMjA1LTkuMzYyLTE2LjU5MS0xMi42NC0yNS44MS04Ljc3eiIgZmlsbD0iI2ZmZDQxZCIvPjxjaXJjbGUgY3g9IjI1NiIgY3k9IjI1NiIgZmlsbD0idXJsKCNTVkdJRF8yXykiIHI9IjE0Mi42MjIiLz48cGF0aCBkPSJtMzEyLjcxOCAxNzAuNTE2Yy0xMS4zOTItNi43NDktMjMuMTUzLTEyLjQwMy0zNi4wNTktMTUuMDUxLTUuNDEtMS4xMS04Ljg5Ni02LjM5Ni03Ljc4Ni0xMS44MDYgMS4xMS01LjQxMSA2LjQwNS04LjkwMSAxMS44MDYtNy43ODYgMTUuNDQgMy4xNjggMjkuOTQ5IDkuMjIzIDQzLjEyNSAxNy45OTYgNC41OTcgMy4wNjEgNS44NDIgOS4yNjkgMi43OCAxMy44NjYtMS45MjYgMi44OTQtNy4xNDggNi43NjItMTMuODY2IDIuNzgxeiIgZmlsbD0iI2ZmZjdkNyIvPjxlbGxpcHNlIGN4PSIxNjguMTE1IiBjeT0iMjg1LjU2NiIgZmlsbD0iI2ZmODVhYiIgcng9IjE0LjkzNiIgcnk9IjEyLjAwMyIvPjxlbGxpcHNlIGN4PSIzNDMuODg2IiBjeT0iMjg1LjU2NiIgZmlsbD0iI2ZmODVhYiIgcng9IjE0LjkzNiIgcnk9IjEyLjAwMyIvPjxjaXJjbGUgY3g9IjE5My43MjEiIGN5PSIyNTUuOTQ4IiBmaWxsPSIjZmZmIiByPSIyOS42MTgiLz48Y2lyY2xlIGN4PSIzMTguMjc5IiBjeT0iMjU1Ljk0OCIgZmlsbD0iI2ZmZiIgcj0iMjkuNjE4Ii8+PGcgZmlsbD0iIzM4Mzg0MiI+PHBhdGggZD0ibTE4MC4zMzIgMjY1LjQ1Yy0zLjUxNS0yLjE5Mi00Ljk1NS02LjU1Ni0yLjk1OS0xMC4xODYgMy4yNzktNS45NjMgOS41NDMtOS42NjkgMTYuMzQ5LTkuNjY5IDYuODA2IDAgMTMuMDcgMy43MDUgMTYuMzQ4IDkuNjY5IDEuOTk2IDMuNjI5LjY3MSA4LjE5LTIuOTU5IDEwLjE4NS0zLjYyOCAxLjk5Ni04LjE5LjY3LTEwLjE4NS0yLjk1OS0uOTQtMS43MS0yLjU1NC0xLjg5NS0zLjIwNC0xLjg5NXMtMi4yNjQuMTg1LTMuMjA1IDEuODk1Yy0xLjM2NSAyLjQ4NC01LjQzMyA1LjkyMy0xMC4xODUgMi45NnoiLz48cGF0aCBkPSJtMzIxLjQ4MyAyNjIuNDkxYy0uOTQtMS43MS0yLjU1NC0xLjg5NS0zLjIwNC0xLjg5NXMtMi4yNjQuMTg1LTMuMjA0IDEuODk1Yy0xLjk5NiAzLjYyOS02LjU1NSA0Ljk1Ni0xMC4xODUgMi45NTktMy42My0xLjk5NS00Ljk1NS02LjU1Ni0yLjk2LTEwLjE4NSAzLjI3OC01Ljk2NCA5LjU0My05LjY2OSAxNi4zNDgtOS42NjlzMTMuMDcgMy43MDUgMTYuMzQ5IDkuNjY5YzEuOTk2IDMuNjMuNTMyIDcuOTU2LTIuOTU5IDEwLjE4Ni00Ljg5IDMuMTIzLTguODE5LS40NzYtMTAuMTg1LTIuOTZ6Ii8+PHBhdGggZD0ibTI2Ny42NzEgMjk1Ljc1MmgtMjMuMzQyYy02LjUwOCAwLTExLjc4NC01LjI3Ni0xMS43ODQtMTEuNzg0IDAtNi41MDggNS4yNzYtMTEuNzg0IDExLjc4NC0xMS43ODRoMjMuMzQyYzYuNTA4IDAgMTEuNzg0IDUuMjc2IDExLjc4NCAxMS43ODQgMCA2LjUwOC01LjI3NiAxMS43ODQtMTEuNzg0IDExLjc4NHoiLz48L2c+PHBhdGggZD0ibTI0NC4zMjkgMjk1Ljc1MmgyMy4zNDJzLjgwMy0xMC44MzQtMTEuNjcxLTEwLjgzNC0xMS42NzEgMTAuODM0LTExLjY3MSAxMC44MzR6IiBmaWxsPSIjZmY3MzdkIi8+PGNpcmNsZSBjeD0iMzQ1LjUyOSIgY3k9IjE4Ny4zMDYiIGZpbGw9IiNmZmY3ZDciIHI9IjEwIi8+PC9zdmc+"
+                />
+            </div>
+        <% }) %>
+    </section>
+    <div id="youWin">
+        <h2>Դու հաղթեցի՛ր, կուզե՞ս կրկին փորձել</h2>
+        <button onClick="window.location.reload(false)">այո</button>
+    </div>
+</main>

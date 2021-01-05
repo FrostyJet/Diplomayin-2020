@@ -1,0 +1,52 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([].join('')) %>
+<% block('scripts').append([
+    `<script src="/st/js/games/animals.js"></script>`
+].join('')) %>
+
+<main class="h-full pb-16 bg-white overflow-y-auto">
+    <div class="container px-6 max-w-7xl grid justify-center mx-auto">
+        <div id="game-intro" class="h-96 flex items-center flex flex-col">
+            <img src="/st/img/game-icons/game-start-1.gif"  />
+            <h1 class="text-4xl mb-6">Թեմա՝ Կենդանիներ</h1>
+            <button class="bg-green-500 left-0 right-0 mx-auto z-10 font-semibold py-3 text-white hover:bg-green-600 px-6 rounded-2xl">Սկսենք <i class="las text-2xl ml-1 la-play-circle"></i></button>
+        </div>
+
+        <div id="game" class="hidden mt-10">
+            <div class="points text-2xl mb-20"><span id="currentPoints">0</span> Միավոր</div>
+
+            <div class="header flex mb-6">
+                <span class="title flex-grow text-center">
+                    <h4 class="text-5xl"></h4>
+                </span>
+
+                <span class="cta ml-6">
+                    <button class="border-4 p-2 rounded-full border-black text-5xl focus:outline-none hover:bg-yellow-100 focus:ring-4 focus:ring-blue-500">
+                        <i class="las la-volume-up"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="content">
+                <ul class="choices grid md:grid-cols-2 max-w-2xl gap-6">
+                    <li class="choice p-6 border-4 cursor-pointer hover:bg-yellow-100 border-black rounded-lg">
+                        <img src="/st/img/game-icons/apple-red.svg" alt="">
+                    </li>
+
+                    <li class="choice p-6 border-4 cursor-pointer hover:bg-yellow-100 border-black rounded-lg">
+                        <img src="/st/img/game-icons/apple-red.svg" alt="">
+                    </li>
+                </ul>
+            </div>
+
+            <div class="steps text-2xl text-center mt-6">
+                <span id="currentStep">1</span>/10
+            </div>
+        </div>
+
+        <div id="game-final" class="text-center hidden mt-20">
+            <h4 class="text-4xl leading-snug">Կեցցե՛ս, դու հավաքեցիր 5 միավոր</h4>
+            <img src="/st/img/game-icons/lose-1.gif" class="max-h-96 mx-auto my-6"/>
+            <button class="bg-yellow-500 p-3 rounded-lg mx-auto block font-semibold">Կրկնել <i class="las la-redo-alt"></i></button>
+        </div>
+    </div>
+</main>

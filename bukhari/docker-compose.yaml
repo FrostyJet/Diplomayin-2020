@@ -1,0 +1,41 @@
+version: '3.3'
+
+volumes:
+  bukhariMongodata:
+    driver: local
+
+services:
+  nginx:
+    container_name: nginx
+    restart: always
+    build: ./nginx
+    volumes:
+      - ./www-gateway/public:/var/bukhari/public
+    depends_on:
+      - www-gateway
+
+  redis:
+    container_name: redis
+    image: redis:6.0.7-alpine
+    restart: always
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+
+  mongo:
+    container_name: mongo
+    restart: always
+    image: mongo
+    env_file: ./.env
+    volumes:
+      - bukhariMongodata:/data/db
+    ports:
+      - "27017:27017"
+
+  www-gateway:
+    container_name: www_gateway
+    build:
+      context: ./www-gateway
+    env_file: ./.env
+    restart: always
+    depends_on:
+      - mongo
