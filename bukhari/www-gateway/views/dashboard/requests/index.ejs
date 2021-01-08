@@ -1,0 +1,119 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([].join('')) %>
+
+<main class="h-full overflow-y-auto">
+
+    <% if(msg){ %>
+        <%
+            let type = msg.type == 'success' ? 'green' : 'red';
+            let cls = 'border py-3 px-6 bg-{type}-100 text-{type}-500 mb-3 border-{type}-300'.replace(/{type}/gi, type);
+        %>
+        <div class="<%= cls %>">
+            <p><%= msg.text %></p>
+        </div>
+    <% } %>
+
+    <div class="container p-6 ml-4 grid">
+        <!-- New Table -->
+        <div class="w-full overflow-hidden rounded-lg shadow-xs">
+
+            <div class="col-span-2 mb-6 flex justify-between items-center">
+                <div class="breadcrumbs">
+                    <ul class="steps shadow rounded-lg">
+                        <li class="step">
+                            <a href="/dashboard" class="link">
+                                <i class="las la-home"></i>
+                            </a>
+                        </li>
+                        <li class="step active">
+                            <a href="/dashboard/requests" class="link">
+                                Մասնագետի օգնություն
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <a href="/dashboard/requests/create"
+                   class="bg-green-500 text-white inline-block font-semibold py-2 px-3 rounded-lg border border-green-600 hover:bg-green-600 focus:outline-none">
+                    Գրանցել հայտ <i class="las la-bell ml-2 transform float-right text-2xl -rotate-12"></i>
+                </a>
+            </div>
+
+            <div class="w-full mt-20 overflow-x-auto">
+                <form class="filters mb-10">
+                    <input type="search" value="<%= filters['search'] %>" name="search"
+                           class="bg-white border border-blue-100 focus:outline-none focus:border-blue-500 rounded-lg py-2 placeholder-gray-600 px-3"
+                           placeholder="Որոնել ․․․">
+                    <button type="submit"
+                            class="bg-blue-500 py-2 px-3 hover:bg-blue-700 font-semibold text-white rounded-lg"><i
+                                class="las la-search"></i></button>
+                </form>
+
+                <% rows.list.forEach(request => { %>
+                    <a href="/dashboard/requests/<%= request.id %>"
+                       class="shadow block border hover:border-blue-500 p-6 bg-white rounded-lg">
+                        <div class="flex justify-between mb-5">
+                            <h4 class="text-xl font-semibold">Անհրաժեշտ
+                                մասնագետ՝ <span class="text-blue-400"><%= professions[request.professionId] %></span>
+                            </h4>
+                            <h4 class="text-xl font-semibold">Ուսանող՝ <span
+                                        class="text-blue-400"><%= request.student.name.first + ' ' +
+                                    request.student.name.last %></span></h4>
+                            <% if(request.isOpen){ %>
+                                <b class="text-green-500 bg-green-100 px-3 py-1 rounded-lg">Ընթացքի մեջ է</b>
+                            <% }else { %>
+                                <b class="text-red-500 bg-red-100 px-3 py-1 rounded-lg">փակված է</b>
+                            <% } %>
+                        </div>
+                        <p><%= request.description.slice(0, 300) %> ...</p>
+
+                        <p class="text-right text-gray-400 mt-5">
+                            Հրապարակվել է՝ <%= new Intl.DateTimeFormat('am',
+                                    { day: '2-digit', year: 'numeric', month: '2-digit' }).format(
+                                    new Date(request.dateCreated)); %>
+                        </p>
+                    </a>
+                    <div class="flex justify-end mb-6 mt-2">
+                        <span class="py-1 px-3"><%= request.replies.length %> Արձագանք</span>
+                        <a class="text-red-600 cursor-pointer py-1 px-3 rounded-md hover:bg-red-100"
+                           onclick="return confirm('Վստահ եք, որ ցանկանում եք հեռացնել այս հայտը?')"
+                           href="/dashboard/requests/delete/<%= request.id %>">Հեռացնել հայտը <i
+                                    class="las la-minus-circle"></i> </a>
+                    </div>
+                <% }) %>
+            </div>
+
+
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+                <span class="flex items-center col-span-3">
+                  Ցուցադրված է <%= (page - 1) * pageLimit + 1 %> - <%= (page - 1) * pageLimit +
+                    rows.list.length %>-ը <%= rows.totalCount %> -ից
+                </span>
+                <span class="col-span-2"></span>
+                <!-- Pagination -->
+                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                  <nav aria-label="Table navigation">
+                    <ul class="inline-flex items-center">
+                        <% if(page > 1) { %>
+                            <li>
+                                <a href="?<%= filters.queryString %>&page=<%= page - 1 %>"
+                                   class="px-3 hover:underline py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-blue">
+                                   <i class="las la-angle-left mr-2"></i> Նախորդ
+                                </a>
+                            </li>
+                        <% } %>
+                        <% if (rows.totalCount - (page - 1) * pageLimit > pageLimit){ %>
+                            <li>
+                                <a href="?<%= filters.queryString %>&page=<%= page + 1 %>"
+                                   class="px-3 hover:underline py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue">
+                                  Հաջրոդ <i class="las la-angle-right ml-2"></i>
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                  </nav>
+                </span>
+            </div>
+        </div>
+    </div>
+</main>

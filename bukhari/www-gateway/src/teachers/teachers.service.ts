@@ -53,8 +53,6 @@ export class TeachersService {
   }
 
   async findAll({ filters = {}, page = 1, limit = 10, sort = null }: any): Promise<any> {
-    const count = await this.teacherModel.countDocuments(filters);
-
     if (page < 1) page = 1;
     if (limit > 50) limit = 50;
 
@@ -71,6 +69,8 @@ export class TeachersService {
 
       delete filters.search;
     }
+
+    const count = await this.teacherModel.countDocuments(filters);
 
     let query = this.teacherModel.find(filters)
       .skip((page - 1) * limit)
@@ -96,5 +96,10 @@ export class TeachersService {
   async deleteById(id) {
     if (typeof id === 'string') id = Types.ObjectId(id);
     return this.teacherModel.deleteOne({ _id: id });
+  }
+
+  async findByTeacherIds(teacherIds: string[]) {
+    const ids = teacherIds.map(id => Types.ObjectId(id));
+    return this.teacherModel.find({ _id: { $in: ids } });
   }
 }

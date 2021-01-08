@@ -1,0 +1,130 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([
+    `<link rel="stylesheet" href="/st/css/dashboard/settings.css" />`,
+].join('')) %>
+<% block('scripts').append([
+    `<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.7/dist/sweetalert2.all.min.js"></script>`,
+].join('')) %>
+
+<main class="h-full pb-16 overflow-y-auto">
+
+    <% if(msg){ %>
+        <%
+            let type = msg.type == 'success' ? 'green' : 'red';
+            let cls = 'border py-3 px-6 bg-{type}-100 text-{type}-500 mb-3 border-{type}-300'.replace(/{type}/gi, type);
+        %>
+        <div class="<%= cls %>">
+            <p><%= msg.text %></p>
+        </div>
+    <% } %>
+
+    <div class="container p-6 max-w-7xl ml-4 grid">
+
+        <div class="col-span-2 mb-6">
+            <div class="breadcrumbs">
+                <ul class="steps shadow rounded-lg">
+                    <li class="step">
+                        <a href="/dashboard" class="link">
+                            <i class="las la-home"></i>
+                        </a>
+                    </li>
+                    <li class="step">
+                        <a href="/dashboard/requests" class="link">
+                            Մասնագետի օգնություն
+                        </a>
+                    </li>
+                    <li class="step active">
+                        <a href="#" class="link">
+                            Հայտ
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <% if(data.teacherId == auth.teacher.id){ %>
+            <form id="updateStoryForm" method="post" class="col-span-2 mb-5 bg-white shadow p-6"
+                  action="/dashboard/requests/edit/<%= data.id %>">
+                <label class="font-semibold" for="isOpen">Հայտի կարգավիճակը</label>
+
+                <div class="flex justify-between mt-2">
+                    <select name="isOpen" id="isOpen" required
+                            class="px-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        <option <%= !data.isOpen ? 'selected' : '' %> value="0">Փակված</option>
+                        <option <%= data.isOpen ? 'selected' : '' %> value="1">Ընթացքի մեջ</option>
+                    </select>
+
+                    <button class="bg-yellow-400 hover:bg-yellow-500 hover:text-white font-semibold px-3 py-3 text-sm ml-2 rounded-md">
+                        Պահպանել
+                    </button>
+                </div>
+            </form>
+        <% } %>
+
+        <div class="shadow col-span-2 sm:rounded-md">
+            <div class="px-4 py-5 grid grid-cols-4 bg-white sm:p-6">
+                <section class="col-span-2">
+                    <div class="mt-2">
+                        <p class="font-semibold">Փնտրվող մասնագետ՝</p>
+                        <p><%= professions[data.professionId] %></p>
+                    </div>
+                    <div class="mt-2">
+                        <p class="font-semibold">Բովանդակություն՝</p>
+                        <p><%= data.description %></p>
+                    </div>
+                </section>
+
+                <section class="col-span-2 pl-6">
+                    <div class="mt-2">
+                        <p class="font-semibold">Ուսանող՝</p>
+                        <div class="flex">
+                            <img width="120" height="120" class="rounded-lg object-contain"
+                                 src="/st/media/<%= data.student.avatar %>"/>
+                            <div class="px-6 w-full">
+                                <p class="flex justify-between">
+                                    <b>Անուն: </b>
+                                    <span class="ml-6"><%= data.student.name.first %></span>
+                                </p>
+                                <p class="flex justify-between">
+                                    <b>Ազգանուն: </b>
+                                    <span class="ml-6"><%= data.student.name.last %></span>
+                                </p>
+                                <p class="flex justify-between">
+                                    <b>Հասցե: </b>
+                                    <span class="ml-6"><%= data.student.address %></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="shadow mt-5 col-span-2 sm:rounded-md">
+            <div class="px-4 grid grid-cols-4 bg-white sm:p-6">
+
+                <div class="col-span-4">
+                    <h4 class="font-semibold font-xl">Արձագանքներ</h4>
+                </div>
+
+                <div class="col-span-4 mt-4">
+                    <% if(data.replies.length) { %>
+                        <% data.replies.forEach(reply => { %>
+                            <div class="bg-gray-100 border border-gray-300 rounded-md mb-2 px-3 py-2">
+                                <div class="flex items-center">
+                                </div>
+                                <p class="mb-3"><b>ԱԱՀ՝ </b> <br> <%= reply.fullname %></p>
+                                <p class="mb-3"><b>Հեռ․ </b> <br> <%= reply.phone %></p>
+                                <p class="mb-3"><b>Էլ․ հասցե </b> <br> <%= reply.email %></p>
+                                <p class="mb-3"><b>Առաջարկ - նամակ </b> <br> <%= reply.message %></p>
+                            </div>
+                        <% }) %>
+                    <% }else { %>
+                        <h4 class="text-gray-400">Դեռևս արձագանք չկա, լցվեք համբերությամբ․․․</h4>
+                    <% } %>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

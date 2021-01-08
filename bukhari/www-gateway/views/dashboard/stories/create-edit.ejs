@@ -1,0 +1,99 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([
+    `<link rel="stylesheet" href="/st/css/dashboard/settings.css" />`,
+].join('')) %>
+<% block('scripts').append([
+    `<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.7/dist/sweetalert2.all.min.js"></script>`,
+].join('')) %>
+
+<main class="h-full pb-16 overflow-y-auto">
+
+    <% if(msg){ %>
+        <%
+            let type = msg.type == 'success' ? 'green' : 'red';
+            let cls = 'border py-3 px-6 bg-{type}-100 text-{type}-500 mb-3 border-{type}-300'.replace(/{type}/gi, type);
+        %>
+        <div class="<%= cls %>">
+            <p><%= msg.text %></p>
+        </div>
+    <% } %>
+
+    <div class="container p-6 max-w-7xl ml-4 grid">
+
+        <div class="col-span-2 mb-6">
+            <div class="breadcrumbs">
+                <ul class="steps shadow rounded-lg">
+                    <li class="step">
+                        <a href="/dashboard" class="link">
+                            <i class="las la-home"></i>
+                        </a>
+                    </li>
+                    <li class="step">
+                        <a href="/dashboard/students" class="link">
+                            Աշակերտներ
+                        </a>
+                    </li>
+                    <li class="step active">
+                        <a href="#" class="link">
+                            Ստեղծել / Թարմացնել հաշիվը
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-span-2 mb-6">
+            <div class="flex justify-between">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-700">
+                        Ճգնաժամային իրավիճակ
+                    </h2>
+                    <p class="text-gray-400 max-w-2xl">
+                        Կատարեք հրապարակումներ, կիսվե՛ք Ձեր փորձով և քննարկեք խնդիրներն ու լուծումները այլ մասնագետների
+                        հետ
+                    </p>
+                </div>
+                <img src="/st/img/undraw/publish-post.svg" width="200"/>
+            </div>
+        </div>
+
+
+        <div class="shadow col-span-2 sm:rounded-md">
+            <div class="px-4 py-5 bg-white sm:p-6">
+                <form id="createForm" method="POST">
+                    <div>
+                        <label class="font-semibold" for="subject">Վերնագիր</label>
+                        <input type="text" id="subject" name="subject" placeholder="Թեմա ․․․"
+                               class="mt-1 p-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="font-semibold" for="studentId">Ուսանողը</label>
+                        <select name="studentId" id="studentId" required
+                                class="mt-1 p-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <% students.forEach(student => { %>
+                                <option <%= student.id == preselectedStudentId ? 'selected' : '' %>
+                                        value="<%= student.id %>"><%= student.name.first + ' ' +
+                                    student.name.last %></option>
+                            <% }) %>
+                        </select>
+                        <small class="text-gray-400">Անձը, ում անկետային պետք է կցվի հրապարակումը</small>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="font-semibold" for="content">Բովանդակություն</label>
+                        <textarea rows="5" type="text" id="content" name="content" placeholder="Մանրամասները ․․․"
+                                  class="mt-1 p-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                    </div>
+
+                    <div class="mt-4 text-right">
+                        <button class="bg-green-500 hover:bg-green-600 font-semibold rounded-lg py-2 px-4 text-white">
+                            Հրապարակել
+                            <i class="la la-check ml-2"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>

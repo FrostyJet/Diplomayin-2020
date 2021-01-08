@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthContextMiddleware } from './@common/auth-context.middleware';
 import { MediaModule } from './media/media.module';
 import { StudentsModule } from './students/students.module';
+import { StoriesModule } from './stories/stories.module';
+import { RequestsModule } from './requests/requests.module';
 
 
 const dbName = process.env.MONGO_INITDB_DATABASE;
@@ -17,7 +19,10 @@ const dbHost = process.env.MONGODB_SERVICE_HOST || 'mongo';
 const url = `mongodb://${dbUsername}:${dbPassword}@${dbHost}:27017/${dbName}`; // process.env.MONGO_USERNAME;
 
 @Module({
-  imports: [MongooseModule.forRoot(url), HomeModule, LoginModule, DashboardModule, TeachersModule, MediaModule, StudentsModule],
+  imports: [MongooseModule.forRoot(url),
+    HomeModule, RequestsModule, StoriesModule, LoginModule,
+    DashboardModule, TeachersModule, MediaModule, StudentsModule,
+  ],
   controllers: [],
   providers: [],
 })

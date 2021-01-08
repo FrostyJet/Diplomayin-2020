@@ -10,30 +10,6 @@ export class TeachersController {
   constructor(private readonly teachersService: TeachersService) {
   }
 
-  @Get(PREFIX)
-  @Render(PREFIX + '/index')
-  async renderList(@Query() query, @Req() req) {
-    const { page = 1 } = query;
-    const filters = {};
-    const msg = req.session.msg;
-    req.session.msg = null;
-
-    if (query.search) filters['search'] = query.search;
-
-    const rows = await this.teachersService.findAll({ page, filters: { ...filters } });
-
-    filters['queryString'] = querystring.stringify(filters);
-
-    return {
-      msg,
-      pageId: 'teachers/index',
-      rows: rows,
-      page,
-      pageLimit: 10,
-      filters,
-    };
-  }
-
   @Get(PREFIX + '/create')
   @Render('dashboard/teachers/create-edit')
   async renderCreate(@Req() req) {
@@ -165,5 +141,29 @@ export class TeachersController {
     };
 
     return res.redirect('/dashboard/teachers');
+  }
+
+  @Get(PREFIX)
+  @Render(PREFIX + '/index')
+  async renderList(@Query() query, @Req() req) {
+    const { page = 1 } = query;
+    const filters = {};
+    const msg = req.session.msg;
+    req.session.msg = null;
+
+    if (query.search) filters['search'] = query.search;
+
+    const rows = await this.teachersService.findAll({ page, filters: { ...filters }, sort: { _id: -1 } });
+
+    filters['queryString'] = querystring.stringify(filters);
+
+    return {
+      msg,
+      pageId: 'teachers/index',
+      rows: rows,
+      page,
+      pageLimit: 10,
+      filters,
+    };
   }
 }

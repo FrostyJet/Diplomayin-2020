@@ -6,6 +6,8 @@ export class IndexController {
   @Get('/')
   @Render('login/index')
   getHello() {
-    return {};
+    return {
+      pageId: 'login/'
+    };
   }
 }

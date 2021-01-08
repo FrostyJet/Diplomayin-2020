@@ -2,7 +2,7 @@ $(function() {
   const levels = [
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/green-apple.mp3',
       },
       title: 'Գտիր կանաչ խնձորը',
       options: [
@@ -13,7 +13,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/blue-flower.mp3',
       },
       title: 'Գտիր կապույտ ծաղիկը',
       options: [
@@ -24,7 +24,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/green-tree.mp3',
       },
       title: 'Գտիր կանաչ ծառը',
       options: [
@@ -35,7 +35,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/chocolate-cake.mp3',
       },
       title: 'Ո՞րն է շոկոլադե թխվածքը',
       options: [
@@ -46,7 +46,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/blue-hair.mp3',
       },
       title: 'Այս աղջիկներից ո՞վ ունի կապույտ վարսեր',
       options: [
@@ -57,7 +57,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/purple-hat.mp3',
       },
       title: 'Գտիր մանուշակագույն գլխարկը',
       options: [
@@ -68,7 +68,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/blue-sock.mp3',
       },
       title: 'Գտիր կապույտ գուլպան',
       options: [
@@ -79,7 +79,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/black-mug.mp3',
       },
       title: 'Գտիր սև բաժակը',
       options: [
@@ -90,7 +90,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/pink-comb.mp3',
       },
       title: 'Գտիր վարդագույն սանրը',
       options: [
@@ -101,7 +101,7 @@ $(function() {
     },
     {
       sounds: {
-        cta: 'https://www.google.com/logos/fnbx/animal_sounds/dog.mp3',
+        cta: '/st/sounds/records/cyan-ring.mp3',
       },
       title: 'Գտիր երկնագույն մատանին',
       options: [

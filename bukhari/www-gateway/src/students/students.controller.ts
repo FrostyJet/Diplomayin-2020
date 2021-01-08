@@ -2,36 +2,15 @@ import { Body, Controller, Get, Post, Query, Render, Req, Res } from '@nestjs/co
 import { StudentsService } from './students.service';
 import * as querystring from 'querystring';
 import { TeachersService } from '../teachers/teachers.service';
+import { StoriesService } from '../stories/stories.service';
 
 @Controller('dashboard/students')
 export class StudentsController {
   constructor(
     private readonly studentsService: StudentsService,
     private readonly teachersService: TeachersService,
+    private readonly storiesService: StoriesService,
   ) {
-  }
-
-  @Get('/')
-  @Render('dashboard/students/index')
-  async renderList(@Req() req, @Query() query) {
-    const { page = 1 } = query;
-    const filters = {};
-    const msg = req.session.msg;
-    req.session.msg = null;
-
-    if (query.search) filters['search'] = query.search;
-
-    const rows = await this.studentsService.findAll({ page, filters: { ...filters } });
-
-    filters['queryString'] = querystring.stringify(filters);
-
-    return {
-      pageId: 'students/index',
-      rows: rows, msg,
-      page,
-      pageLimit: 10,
-      filters,
-    };
   }
 
   @Get('create')
@@ -59,8 +38,10 @@ export class StudentsController {
     const msg = req.session.msg;
     req.session.msg = null;
 
+    const stories = await this.storiesService.findByStudentId(req.params.id);
+
     return {
-      msg, data,
+      msg, data, stories,
       pageId: 'students/edit', teachers: teachers.list,
     };
   }
@@ -153,5 +134,28 @@ export class StudentsController {
     };
 
     return res.redirect('/dashboard/students');
+  }
+
+  @Get('/')
+  @Render('dashboard/students/index')
+  async renderList(@Req() req, @Query() query) {
+    const { page = 1 } = query;
+    const filters = {};
+    const msg = req.session.msg;
+    req.session.msg = null;
+
+    if (query.search) filters['search'] = query.search;
+
+    const rows = await this.studentsService.findAll({ page, filters: { ...filters }, sort: { _id: -1 } });
+
+    filters['queryString'] = querystring.stringify(filters);
+
+    return {
+      pageId: 'students/index',
+      rows: rows, msg,
+      page,
+      pageLimit: 10,
+      filters,
+    };
   }
 }

@@ -6,6 +6,8 @@ export class IndexController {
   @Get('/')
   @Render('home/index')
   getHello() {
-    return {};
+    return {
+      pageId: 'index/'
+    };
   }
 }

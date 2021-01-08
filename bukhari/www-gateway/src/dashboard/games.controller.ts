@@ -15,6 +15,8 @@ export class GamesController {
   renderSingleGame(@Res() res, @Req() req) {
     const { id } = req.params;
 
-    return res.render('dashboard/games/' + id);
+    return res.render('dashboard/games/' + id, {
+      pageId: 'games/'
+    });
   }
 }

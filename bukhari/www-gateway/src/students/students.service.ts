@@ -13,6 +13,7 @@ export class StudentsService {
   }
 
   async create(info: any): Promise<Student> {
+    if (typeof info.teacherId == 'string') info.teacherId = Types.ObjectId(info.teacherId);
     return (new this.studentModel(info)).save();
   }
 
@@ -22,6 +23,7 @@ export class StudentsService {
 
   public async update(studentId, patch): Promise<any> {
     if (typeof studentId === 'string') studentId = Types.ObjectId(studentId);
+    if (typeof patch.teacherId === 'string') patch.teacherId = Types.ObjectId(patch.teacherId);
     return this.studentModel.updateOne({ _id: studentId }, patch);
   }
 
@@ -31,8 +33,6 @@ export class StudentsService {
   }
 
   async findAll({ filters = {}, page = 1, limit = 10, sort = null }: any): Promise<any> {
-    const count = await this.studentModel.countDocuments(filters);
-
     if (page < 1) page = 1;
     if (limit > 50) limit = 50;
 
@@ -48,6 +48,8 @@ export class StudentsService {
 
       delete filters.search;
     }
+
+    const count = await this.studentModel.countDocuments(filters);
 
     let query = this.studentModel.find(filters)
       .populate('teacher')
@@ -69,6 +71,11 @@ export class StudentsService {
   async findById(id: any) {
     if (typeof id === 'string') id = Types.ObjectId(id);
     return this.studentModel.findOne(id);
+  }
+
+  async findByTeacherId(teacherId: string | Types.ObjectId) {
+    if (typeof teacherId === 'string') teacherId = Types.ObjectId(teacherId);
+    return this.studentModel.find({ teacherId: teacherId });
   }
 
   async deleteById(id) {

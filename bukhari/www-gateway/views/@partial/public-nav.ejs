@@ -10,7 +10,10 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="/"
-                           class="text-gray font-bold px-3 py-2 hover:bg-blue-600 hover:text-white rounded-md text-sm font-medium">Գլխավոր</a>
+                           class="text-gray transition font-bold px-3 py-2 <%= pageId.startsWith('index/') ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white' %> rounded-md text-sm font-medium">Գլխավոր</a>
+
+                        <a href="/requests"
+                           class="text-gray transition font-bold px-3 py-2 <%= pageId.startsWith('requests/') ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white' %> rounded-md text-sm font-medium">Հայտեր մասնագետներին</a>
                     </div>
                 </div>
             </div>
@@ -20,9 +23,10 @@
                     <div class="ml-3 relative">
                         <div>
                             <a href="/login"
-                               class="text-gray font-bold px-3 py-2 hover:bg-blue-600 hover:text-white rounded-md text-sm font-medium">Մուտք</a>
-                            <a href="#"
-                               class="text-gray font-bold px-3 py-2 hover:bg-blue-600 hover:text-white rounded-md text-sm font-medium">Անձնական էջ</a>
+                               class="text-gray font-bold px-3 py-2 <%= pageId.startsWith('login/') ? 'bg-blue-600 text-white' : 'hover:bg-blue-600 hover:text-white' %> rounded-md text-sm font-medium">Մուտք</a>
+                            <a href="/dashboard"
+                               class="text-gray font-bold px-3 py-2 hover:bg-blue-600 hover:text-white rounded-md text-sm font-medium">Անձնական
+                                էջ</a>
                         </div>
                     </div>
                 </div>
