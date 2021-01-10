@@ -85,4 +85,9 @@ export class StoriesService {
     if (typeof studentId === 'string') studentId = Types.ObjectId(studentId);
     return this.storyModel.find({ studentId });
   }
+
+  async getTotalCount(filters: any = {}) {
+    if (typeof filters.teacherId === 'string') filters.teacherId = Types.ObjectId(filters.teacherId);
+    return this.storyModel.countDocuments(filters);
+  }
 }

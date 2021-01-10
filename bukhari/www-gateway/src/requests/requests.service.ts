@@ -6,7 +6,7 @@ import { Model, Types } from 'mongoose';
 @Injectable()
 export class RequestsService {
   constructor(
-    @InjectModel(Request.name) private storyModel: Model<Request>,
+    @InjectModel(Request.name) private requestModule: Model<Request>,
   ) {
   }
 
@@ -15,21 +15,21 @@ export class RequestsService {
     if (typeof info.studentId == 'string') info.studentId = Types.ObjectId(info.studentId);
 
     info.isOpen = true;
-    return (new this.storyModel(info)).save();
+    return (new this.requestModule(info)).save();
   }
 
   public async findByEmail(email: any): Promise<Request | null> {
-    return this.storyModel.findOne({ email });
+    return this.requestModule.findOne({ email });
   }
 
   public async update(studentId, patch): Promise<any> {
     if (typeof studentId === 'string') studentId = Types.ObjectId(studentId);
-    return this.storyModel.updateOne({ _id: studentId }, patch);
+    return this.requestModule.updateOne({ _id: studentId }, patch);
   }
 
   public async getById(studentId): Promise<Request> {
     if (typeof studentId === 'string') studentId = Types.ObjectId(studentId);
-    return this.storyModel.findOne(studentId);
+    return this.requestModule.findOne(studentId);
   }
 
   async findAll({ filters = {}, page = 1, limit = 10, sort = null }: any): Promise<any> {
@@ -51,9 +51,9 @@ export class RequestsService {
       filters.teacherId = Types.ObjectId(filters.teacherId);
     }
 
-    const count = await this.storyModel.countDocuments(filters);
+    const count = await this.requestModule.countDocuments(filters);
 
-    let query = this.storyModel.find(filters)
+    let query = this.requestModule.find(filters)
       .populate('student')
       .skip((page - 1) * limit)
       .limit(limit);
@@ -72,21 +72,42 @@ export class RequestsService {
 
   async findById(id: any) {
     if (typeof id === 'string') id = Types.ObjectId(id);
-    return this.storyModel.findOne(id).populate('student');
+    return this.requestModule.findOne(id).populate('student');
   }
 
   async deleteById(id) {
     if (typeof id === 'string') id = Types.ObjectId(id);
-    return this.storyModel.deleteOne({ _id: id });
+    return this.requestModule.deleteOne({ _id: id });
   }
 
   async findByStudentId(studentId: string | Types.ObjectId) {
     if (typeof studentId === 'string') studentId = Types.ObjectId(studentId);
-    return this.storyModel.find({ studentId });
+    return this.requestModule.find({ studentId });
   }
 
   async addReply(requestId: any, data: { phone: any | string; fullname: any | string; message: any; email: any }) {
     if (typeof requestId === 'string') requestId = Types.ObjectId(requestId);
-    return this.storyModel.updateOne({ _id: requestId }, { $push: { replies: data } });
+    return this.requestModule.updateOne({ _id: requestId }, { $push: { replies: data } });
+  }
+
+  getYearlyStats({ isOpen }) {
+    return this.requestModule.aggregate([
+      {
+        $match:
+          {
+            isOpen: isOpen,
+          },
+      },
+      {
+        $group: {
+          _id: { month: { $month: '$dateCreated' } }, count: { $sum: 1 },
+        },
+      },
+    ]).exec();
+  }
+
+  async getTotalCount(filters: any = {}) {
+    if (typeof filters.teacherId === 'string') filters.teacherId = Types.ObjectId(filters.teacherId);
+    return this.requestModule.countDocuments(filters);
   }
 }

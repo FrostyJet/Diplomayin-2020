@@ -1,13 +1,13 @@
 <% layout('@layouts/dashboard') -%>
 <% block('links').append([
-    `<link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">`,
+    `<link rel="stylesheet" href="/st/lib/filepond/filepond-plugin-image-preview.css">`,
     `<link rel="stylesheet" href="/st/lib/filepond/filepond.min.css" />`,
     `<link rel="stylesheet" href="/st/css/dashboard/settings.css" />`,
 ].join('')) %>
 <% block('scripts').append([
-    `<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.7/dist/sweetalert2.all.min.js"></script>`,
-    `<script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>`,
-    `<script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>`,
+    `<script src="/st/lib/sweetalert/sweetalert.min.js"></script>`,
+    `<script src="/st/lib/filepond/filepond-plugin-image-preview.js"></script>`,
+    `<script src="/st/lib/filepond/filepond-plugin-file-validate-type.js"></script>`,
     `<script src="/st/lib/filepond/filepond.min.js"></script>`,
     `<script src="/st/js/dashboard/create-edit-generic.js"></script>`,
 ].join('')) %>
@@ -70,7 +70,7 @@
                                     <i class="las la-user-circle text-6xl"></i>
                                     <label class="block text-sm font-medium text-gray-700">Նկար</label>
 
-                                    <div class="image-wrapper <%= data.avatar
+                                    <div class="image-wrapperb w-full <%= data.avatar
                                             ? ''
                                             : 'hidden' %> overflow-hidden absolute z-10 left-0 top-0 h-full bg-black flex items-center justify-center rounded-lg">
                                         <img class="w-full h-full object-contain" src="/st/media/<%= data.avatar %>"/>

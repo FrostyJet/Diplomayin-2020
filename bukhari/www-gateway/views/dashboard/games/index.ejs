@@ -2,14 +2,14 @@
 <% block('links').append([].join('')) %>
 <%
 const games = [
-    { id: 'color-wheel', icon: '/st/img/i/color-wheel.svg' },
-    { id: 'color-palette', icon: '/st/img/i/color-palette.svg' },
-    { id: 'sudoku', icon: '/st/img/i/sudoku.svg' },
-    { id: 'tic-tac-toe', icon: '/st/img/i/tic-tac-toe.svg' },
-    { id: 'chess', icon: '/st/img/game-icons/chess.svg' },
-    { id: 'puzzle', icon: '/st/img/i/jigsaw.svg' },
-    { id: 'animals', icon: '/st/img/i/lion.svg' },
-    { id: 'memory', icon: '/st/img/i/innovation.svg' },
+    { id: 'color-wheel', icon: '/st/img/i/color-wheel.svg', title: 'Գունախաղ' },
+    { id: 'color-palette', icon: '/st/img/i/cubes-stack.svg', title: '2048' },
+    { id: 'sudoku', icon: '/st/img/i/sudoku.svg', title: 'Սուդոկու' },
+    { id: 'tic-tac-toe', icon: '/st/img/i/tic-tac-toe.svg', title: 'Իքսիկ և կլորիկ' },
+    { id: 'chess', icon: '/st/img/game-icons/chess.svg', title: 'Շախմատ' },
+    { id: 'puzzle', icon: '/st/img/i/jigsaw.svg', title: 'Փազլ' },
+    { id: 'animals', icon: '/st/img/i/lion.svg', title: 'Կենդանիներ' },
+    { id: 'memory', icon: '/st/img/i/innovation.svg', title: 'Հիշողության լարում' },
 ];
 %>
 
@@ -19,8 +19,9 @@ const games = [
         <div class="grid md:grid-cols-3 gap-6">
             <% games.forEach(game => { %>
                 <a href="/dashboard/games/<%= game.id %>"
-                   class="h-80 rounded-2xl shadow-md bg-white p-6 border-2 hover:border-yellow-500 cursor-pointer">
+                   class="h-80 rounded-2xl relative shadow-md bg-white px-6 pt-6 pb-10 border-2 hover:border-yellow-500 cursor-pointer">
                     <img src="<%= game.icon %>" class="w-auto mx-auto max-w-full max-h-full"/>
+                    <h4 class="absolute bottom-2 font-semibold"><%= game.title %></h4>
                 </a>
             <% }) %>
         </div>

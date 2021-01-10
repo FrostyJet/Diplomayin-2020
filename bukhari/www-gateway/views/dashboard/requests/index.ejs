@@ -49,7 +49,10 @@
                                 class="las la-search"></i></button>
                 </form>
 
-                <% rows.list.forEach(request => { %>
+                <% if(rows.list.length <= 0){ %>
+                    <p class="py-6 text-gray-400">Տվյալները բացակայում են․․․</p>
+                <%} else {%>
+                    <% rows.list.forEach(request => { %>
                     <a href="/dashboard/requests/<%= request.id %>"
                        class="shadow block border hover:border-blue-500 p-6 bg-white rounded-lg">
                         <div class="flex justify-between mb-5">
@@ -81,17 +84,15 @@
                                     class="las la-minus-circle"></i> </a>
                     </div>
                 <% }) %>
-            </div>
 
-
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+                    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                 <span class="flex items-center col-span-3">
                   Ցուցադրված է <%= (page - 1) * pageLimit + 1 %> - <%= (page - 1) * pageLimit +
                     rows.list.length %>-ը <%= rows.totalCount %> -ից
                 </span>
-                <span class="col-span-2"></span>
-                <!-- Pagination -->
-                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                            <span class="col-span-2"></span>
+                            <!-- Pagination -->
+                            <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                   <nav aria-label="Table navigation">
                     <ul class="inline-flex items-center">
                         <% if(page > 1) { %>
@@ -113,6 +114,8 @@
                     </ul>
                   </nav>
                 </span>
+                        </div>
+                <%}%>
             </div>
         </div>
     </div>

@@ -82,4 +82,9 @@ export class StudentsService {
     if (typeof id === 'string') id = Types.ObjectId(id);
     return this.studentModel.deleteOne({ _id: id });
   }
+
+  async getTotalCount(filters: any = {}) {
+    if (typeof filters.teacherId === 'string') filters.teacherId = Types.ObjectId(filters.teacherId);
+    return this.studentModel.countDocuments(filters);
+  }
 }

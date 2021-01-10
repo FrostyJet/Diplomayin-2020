@@ -102,4 +102,8 @@ export class TeachersService {
     const ids = teacherIds.map(id => Types.ObjectId(id));
     return this.teacherModel.find({ _id: { $in: ids } });
   }
+
+  async getTotalCount(filters = {}) {
+    return this.teacherModel.countDocuments(filters);
+  }
 }
