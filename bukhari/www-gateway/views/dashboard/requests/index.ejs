@@ -105,7 +105,7 @@
                         <% } %>
                         <% if (rows.totalCount - (page - 1) * pageLimit > pageLimit){ %>
                             <li>
-                                <a href="?<%= filters.queryString %>&page=<%= page + 1 %>"
+                                <a href="?<%= filters.queryString %>&page=<%= +page + 1 %>"
                                    class="px-3 hover:underline py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue">
                                   Հաջրոդ <i class="las la-angle-right ml-2"></i>
                                 </a>

@@ -23,13 +23,17 @@ export class RequestsController {
   @Render('home/requests')
   async renderRequests(@Req() req, @Res() res, @Query() query) {
     const { page = 1 } = query;
-    const filters = {};
+    const filters = {isOpen: 1};
     const msg = req.session.msg;
     req.session.msg = null;
 
     if (query.search) filters['search'] = query.search;
 
-    const rows = await this.requestsService.findAll({ page, filters: { ...filters }, sort: { 'isOpen': -1 } });
+    const rows = await this.requestsService.findAll({
+      page,
+      filters: { ...filters },
+      sort: {  dateCreated: -1 },
+    });
 
     filters['queryString'] = querystring.stringify(filters);
 

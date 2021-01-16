@@ -145,9 +145,11 @@ export class StudentsController {
     req.session.msg = null;
 
     if (query.search) filters['search'] = query.search;
+    if (query.selfStudents) filters['teacherId'] = req.auth.teacher.id;
 
     const rows = await this.studentsService.findAll({ page, filters: { ...filters }, sort: { _id: -1 } });
 
+    filters['selfStudents'] = query.selfStudents;
     filters['queryString'] = querystring.stringify(filters);
 
     return {

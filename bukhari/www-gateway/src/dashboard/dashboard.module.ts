@@ -17,6 +17,6 @@ export class DashboardModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes('/dashboard/*');
+      .forRoutes('/dashboard', '/dashboard/*');
   }
 }

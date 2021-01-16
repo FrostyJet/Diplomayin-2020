@@ -42,12 +42,26 @@
 
             <div class="w-full mt-20 overflow-x-auto">
                 <form class="filters mb-10">
-                    <input type="search" value="<%= filters['search'] %>" name="search"
-                           class="bg-white border border-blue-100 focus:outline-none focus:border-blue-500 rounded-lg py-2 placeholder-gray-600 px-3"
-                           placeholder="Որոնել ․․․">
-                    <button type="submit"
-                            class="bg-blue-500 py-2 px-3 hover:bg-blue-700 font-semibold text-white rounded-lg"><i
-                                class="las la-search"></i></button>
+                    <div class="mb-3">
+                        <label for="selfStudents" class="cursor-pointer inline-flex font-semibold items-center">
+                            <input type="checkbox" id="selfStudents" class="w-4 h-4 mr-2"
+                                   name="selfStudents" <%= filters['selfStudents'] ? 'checked' : null %>
+                                   value="1">
+                            Միայն իմ ուսանողները
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="search" value="<%= filters['search'] %>" name="search"
+                               class="bg-white border border-blue-100 focus:outline-none focus:border-blue-500 rounded-lg py-2 placeholder-gray-600 px-3"
+                               placeholder="Որոնել ․․․">
+                        <button type="submit"
+                                class="bg-blue-500 py-2 px-3 hover:bg-blue-700 font-semibold text-white rounded-lg">
+                            Որոնել
+                            <i class="las la-search"></i>
+                        </button>
+
+                    </div>
                 </form>
                 <table class="w-full whitespace-no-wrap">
                     <thead>
@@ -127,7 +141,7 @@
                         <% } %>
                         <% if (rows.totalCount - (page - 1) * pageLimit > pageLimit){ %>
                             <li>
-                                <a href="?<%= filters.queryString %>&page=<%= page + 1 %>"
+                                <a href="?<%= filters.queryString %>&page=<%= +page + 1 %>"
                                    class="px-3 hover:underline py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue">
                                   Հաջրոդ <i class="las la-angle-right ml-2"></i>
                                 </a>

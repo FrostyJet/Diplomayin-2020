@@ -70,6 +70,7 @@ export class StoriesController {
       content: body.content,
       replies: [],
       teacherId: req.auth.teacher.id,
+      isOpen: true,
     };
 
     const story = await this.storiesService.create(data);
@@ -127,7 +128,7 @@ export class StoriesController {
 
     if (query.search) filters['search'] = query.search;
 
-    const rows = await this.storiesService.findAll({ page, filters: { ...filters }, sort: { 'isOpen': -1 } });
+    const rows = await this.storiesService.findAll({ page, filters: { ...filters }, sort: {  'isOpen': -1, dateCreated: -1,} });
 
     filters['queryString'] = querystring.stringify(filters);
 

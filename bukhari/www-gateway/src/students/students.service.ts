@@ -39,6 +39,8 @@ export class StudentsService {
     page = parseInt(page);
     limit = parseInt(limit);
 
+    if (filters.teacherId && typeof filters.teacherId == 'string') filters.teacherId = Types.ObjectId(filters.teacherId);
+
     if (filters.search) {
       filters['$or'] = [
         { 'name.first': { $regex: '.*' + filters.search + '.*' } },
