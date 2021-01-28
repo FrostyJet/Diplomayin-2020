@@ -8,6 +8,7 @@ export class Student extends Document {
   @Prop({ required: true, type: Object }) name: { first: string, last: string };
   @Prop({ required: true }) avatar: string;
   @Prop() address: string;
+  @Prop() problemDescription: string;
   @Prop() teacherId: Types.ObjectId;
 
   @Prop(raw({

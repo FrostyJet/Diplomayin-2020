@@ -1,0 +1,111 @@
+<% layout('@layouts/dashboard') -%>
+<% block('links').append([].join('')) %>
+
+<main class="h-full overflow-y-auto">
+
+    <% if(msg){ %>
+        <%
+            let type = msg.type == 'success' ? 'green' : 'red';
+            let cls = 'border py-3 px-6 bg-{type}-100 text-{type}-500 mb-3 border-{type}-300'.replace(/{type}/gi, type);
+        %>
+        <div class="<%= cls %>">
+            <p><%= msg.text %></p>
+        </div>
+    <% } %>
+
+    <div class="container p-6 ml-4 grid">
+        <!-- New Table -->
+        <div class="w-full overflow-hidden rounded-lg shadow-xs">
+
+            <div class="col-span-2 mb-6">
+                <div class="breadcrumbs">
+                    <ul class="steps shadow rounded-lg">
+                        <li class="step">
+                            <a href="/dashboard" class="link">
+                                <i class="las la-home"></i>
+                            </a>
+                        </li>
+                        <li class="step active">
+                            <a href="/dashboard/students" class="link">
+                                Իմ շահառուներ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-span-2">
+                <h2 class="mb-3 text-2xl font-semibold text-gray-700">
+                    Շահառուների ցուցակ
+                </h2>
+            </div>
+
+            <% if(rows && rows.list && rows.list.length){ %>
+                <div class="container mb-12 mt-3 mx-auto">
+                    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+                        <% rows.list.forEach(student => { %>
+                            <!-- Column -->
+                            <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/5">
+
+                                <!-- Article -->
+                                <article class="overflow-hidden rounded-lg shadow-lg border-2 hover:bg-yellow-100 hover:border-yellow-500">
+
+                                    <a href="/dashboard/students/<%= student.id %>">
+                                        <img alt="Placeholder" class="block h-auto w-full"
+                                             src="<%= student.avatar && '/st/media' + student.avatar %>">
+                                    </a>
+
+                                    <header class="flex items-center justify-between leading-tight p-2 md:p-4">
+                                        <h1 class="text-lg">
+                                            <a class="no-underline hover:underline font-semibold text-black" href="/dashboard/students/<%= student.id %>">
+                                                <%= student.name.first  %>
+                                                <%= student.name.last  %>
+                                            </a>
+                                        </h1>
+                                    </header>
+
+                                </article>
+                                <!-- END Article -->
+
+                            </div>
+                            <!-- END Column -->
+                        <% }) %>
+                    </div>
+                </div>
+            <% }else { %>
+                <p class="text-gray-400">Դուք դեռևս չունեք շահառուներ...</p>
+            <% } %>
+
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+                <span class="flex items-center col-span-3">
+                  Ցուցադրված է <%= (page - 1) * pageLimit + 1 %> - <%= (page - 1) * pageLimit +
+                    rows.list.length %>-ը <%= rows.totalCount %> -ից
+                </span>
+                <span class="col-span-2"></span>
+                <!-- Pagination -->
+                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                  <nav aria-label="Table navigation">
+                    <ul class="inline-flex items-center">
+                        <% if(page > 1) { %>
+                            <li>
+                                <a href="?<%= filters.queryString %>&page=<%= page - 1 %>"
+                                   class="px-3 hover:underline py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-blue">
+                                   <i class="las la-angle-left mr-2"></i> Նախորդ
+                                </a>
+                            </li>
+                        <% } %>
+                        <% if (rows.totalCount - (page - 1) * pageLimit > pageLimit){ %>
+                            <li>
+                                <a href="?<%= filters.queryString %>&page=<%= +page + 1 %>"
+                                   class="px-3 hover:underline py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-blue">
+                                  Հաջրոդ <i class="las la-angle-right ml-2"></i>
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                  </nav>
+                </span>
+            </div>
+        </div>
+    </div>
+</main>

@@ -4,6 +4,22 @@ import * as bcrypt from 'bcryptjs';
 
 const SALT_WORK_FACTOR = 10;
 
+export const ENUM_PROFESSIONS = {
+  'psychologist': 'Հոգեբան',
+  'sl_therpahist': 'Լոգոպեդ',
+  'psychoanalyst': 'Հոգեվերլուծաբան',
+  'art_therapist': 'Արտ թերապեվտ',
+  'addiction_counselor': 'կախվածության խորհրդատու',
+  'sport_counselor': 'Կինեզոթերապեվտ / Ֆիզ․ կուլտ․ մասնագետ',
+  'other': 'այլ',
+};
+
+export const ENUM_ACC_TYPE = {
+  'regular': 'Սոց․ Մանկավարժ',
+  'admin': 'Ադմինիստրատոր',
+  'spec': 'Մասնագետ',
+};
+
 @Schema({
   toJSON: { virtuals: true },
 })
@@ -14,6 +30,7 @@ export class Teacher extends Document {
   @Prop() email: string;
   @Prop() type: string;
   @Prop() address: string;
+  @Prop() spec: string;
 
   @Prop(raw({
     type: Date,

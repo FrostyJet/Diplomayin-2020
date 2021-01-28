@@ -1,3 +1,17 @@
+::-webkit-scrollbar {
+    width: 6px;
+    height: 2px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(37, 99, 235, 0.24);
+}
+
 body {
     background: #f9fafb;
     font-family: 'Raleway', sans-serif;

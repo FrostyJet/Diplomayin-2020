@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Query, Render, Req, Res } from '@nestjs/common';
 import { TeachersService } from './teachers.service';
 import * as querystring from 'querystring';
-import { Teacher } from './schemas/teacher.schema';
+import { ENUM_ACC_TYPE, ENUM_PROFESSIONS, Teacher } from './schemas/teacher.schema';
 
 const PREFIX = 'dashboard/teachers';
 
@@ -37,7 +37,7 @@ export class TeachersController {
 
     return {
       pageId: 'teachers/edit', msg,
-      data, updated: false, errors: null,
+      data, updated: false, errors: null, professions: ENUM_PROFESSIONS, accTypes: ENUM_ACC_TYPE
     };
   }
 
@@ -63,6 +63,7 @@ export class TeachersController {
     if (body.address) data['address'] = body.address;
     if (body.avatar) data['avatar'] = body.avatar;
     if (body.password) data['password'] = body.password;
+    if (body.spec) data['spec'] = body.spec;
 
     if (!errors.length) {
       const result = await this.teachersService.create(data);
@@ -103,6 +104,7 @@ export class TeachersController {
     if (body.address) data['address'] = body.address;
     if (body.avatar) data['avatar'] = body.avatar;
     if (body.type) data['type'] = body.type;
+    if (body.spec) data['spec'] = body.spec;
     if (body.password) {
       data['password'] = await Teacher.encryptPassword(body.password);
     }

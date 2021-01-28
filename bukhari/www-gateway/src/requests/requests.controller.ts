@@ -3,25 +3,17 @@ import { RequestsService } from './requests.service';
 import * as querystring from 'querystring';
 import { StudentsService } from '../students/students.service';
 import { TeachersService } from '../teachers/teachers.service';
+import { ENUM_PROFESSIONS } from '../teachers/schemas/teacher.schema';
 
 const PREFIX = 'dashboard/requests';
 
 @Controller()
 export class RequestsController {
-  public professions = {
-    'psychologist': 'Հոգեբան',
-    'sl_therpahist': 'Լոգոպեդ',
-    'psychoanalyst': 'Հոգեվերլուծաբան',
-    'art_therapist': 'Արտ թերապեվտ',
-    'addiction_counselor': 'կախվածության խորհրդատու',
-    'sport_counselor': 'Կինեզոթերապեվտ / Ֆիզ․ կուլտ․ մասնագետ',
-    'other': 'այլ',
-  };
+  public professions = ENUM_PROFESSIONS;
 
   constructor(
     private readonly requestsService: RequestsService,
     private readonly studentsService: StudentsService,
-    private readonly teachersService: TeachersService,
   ) {
   }
 
@@ -29,15 +21,23 @@ export class RequestsController {
   @Render('dashboard/requests/create-edit')
   async renderCreate(@Req() req, @Query() query) {
     const { studentId } = query;
+    let student = null;
+    let students = null;
 
-    const students = await this.studentsService.findByTeacherId(req.auth.teacher.id);
+    if (studentId) {
+      student = await this.studentsService.findById(studentId);
+    }
+
+    if (!student) {
+      students = await this.studentsService.findByTeacherId(req.auth.teacher.id);
+    }
 
     const msg = req.session.msg;
     req.session.msg = null;
 
     return {
       pageId: 'requests/index',
-      studentId, students, preselectedStudentId: studentId,
+      studentId, students, student, preselectedStudentId: studentId,
       msg, professions: this.professions,
     };
   }
@@ -48,6 +48,7 @@ export class RequestsController {
     const { id } = req.params;
     const msg = req.session.msg;
     req.session.msg = null;
+
 
     const request = await this.requestsService.findById(id);
 

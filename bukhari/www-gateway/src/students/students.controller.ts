@@ -30,6 +30,31 @@ export class StudentsController {
     };
   }
 
+  @Get('personal')
+  @Render('dashboard/students/personal')
+  async renderPersonalList(@Req() req, @Query() query) {
+    const { page = 1 } = query;
+    const filters = {};
+    const msg = req.session.msg;
+    req.session.msg = null;
+
+    if (query.search) filters['search'] = query.search;
+    filters['teacherId'] = req.auth.teacher.id;
+
+    const rows = await this.studentsService.findAll({ page, filters: { ...filters }, sort: { _id: -1 } });
+
+    filters['selfStudents'] = query.selfStudents;
+    filters['queryString'] = querystring.stringify(filters);
+
+    return {
+      pageId: 'students/personal',
+      rows: rows, msg,
+      page,
+      pageLimit: 10,
+      filters,
+    };
+  }
+
   @Get(':id')
   @Render('dashboard/students/create-edit')
   async renderUpdate(@Body() body, @Req() req) {
@@ -66,6 +91,7 @@ export class StudentsController {
     else errors.push('Նկարը պարտադիր է');
 
     if (body.address) data['address'] = body.address;
+    if (body.problemDescription) data['problemDescription'] = body.problemDescription;
     if (body.teacherId) data['teacherId'] = body.teacherId;
 
     if (!errors.length) {
@@ -102,6 +128,7 @@ export class StudentsController {
 
     if (body.email) data['email'] = body.email;
     if (body.address) data['address'] = body.address;
+    if (body.problemDescription) data['problemDescription'] = body.problemDescription;
     if (body.avatar) data['avatar'] = body.avatar;
     if (body.teacherId) data['teacherId'] = body.teacherId;
 
