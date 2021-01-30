@@ -51,6 +51,10 @@ export class RequestsService {
       filters.teacherId = Types.ObjectId(filters.teacherId);
     }
 
+    if (filters.specId && typeof filters.specId == 'string') {
+      filters.specId = Types.ObjectId(filters.specId);
+    }
+
     const count = await this.requestModule.countDocuments(filters);
 
     let query = this.requestModule.find(filters)
@@ -72,7 +76,7 @@ export class RequestsService {
 
   async findById(id: any) {
     if (typeof id === 'string') id = Types.ObjectId(id);
-    return this.requestModule.findOne(id).populate('student');
+    return this.requestModule.findOne(id).populate('student').populate('spec');
   }
 
   async deleteById(id) {
@@ -109,5 +113,22 @@ export class RequestsService {
   async getTotalCount(filters: any = {}) {
     if (typeof filters.teacherId === 'string') filters.teacherId = Types.ObjectId(filters.teacherId);
     return this.requestModule.countDocuments(filters);
+  }
+
+  async apply(param: { specId: string | Types.ObjectId; postId: string | Types.ObjectId }) {
+    if (typeof param.postId === 'string') param.postId = Types.ObjectId(param.postId);
+    if (typeof param.specId === 'string') param.specId = Types.ObjectId(param.specId);
+
+    return this.requestModule.updateOne({ _id: param.postId }, { specId: param.specId, specStart: new Date() });
+  }
+
+  async close(param: { specResult: any; postId: any }) {
+    if (typeof param.postId === 'string') param.postId = Types.ObjectId(param.postId);
+
+    return this.requestModule.updateOne({ _id: param.postId }, {
+      specResult: param.specResult,
+      specEnd: new Date(),
+      isOpen: false,
+    });
   }
 }

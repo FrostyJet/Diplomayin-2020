@@ -34,7 +34,7 @@ export class StudentsService {
 
   async findAll({ filters = {}, page = 1, limit = 10, sort = null }: any): Promise<any> {
     if (page < 1) page = 1;
-    if (limit > 50) limit = 50;
+    if (limit > 200) limit = 200;
 
     page = parseInt(page);
     limit = parseInt(limit);

@@ -9,8 +9,11 @@ export class Request extends Document {
   @Prop() studentId: Types.ObjectId;
   @Prop() description: string;
   @Prop() professionId: string;
-  @Prop() replies: any[];
   @Prop() isOpen: boolean;
+  @Prop() specId: Types.ObjectId;
+  @Prop() specStart: Date;
+  @Prop() specEnd: Date;
+  @Prop() specResult: string;
 
   @Prop(raw({
     type: Date,
@@ -32,6 +35,13 @@ RequestSchema.virtual('teacher', {
 RequestSchema.virtual('student', {
   ref: 'Student',
   localField: 'studentId',
+  foreignField: '_id',
+  justOne: true,
+});
+
+RequestSchema.virtual('spec', {
+  ref: 'Teacher',
+  localField: 'specId',
   foreignField: '_id',
   justOne: true,
 });

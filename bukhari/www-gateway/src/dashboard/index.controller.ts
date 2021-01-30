@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Render, Req } from '@nestjs/common';
+import { Controller, Get, Post, Render, Req, Res } from '@nestjs/common';
 import { TeachersService } from '../teachers/teachers.service';
 import { StudentsService } from '../students/students.service';
 import { RequestsService } from '../requests/requests.service';
@@ -93,7 +93,11 @@ export class IndexController {
 
   @Get('/')
   @Render('dashboard/index')
-  async renderDashboard(@Req() req) {
+  async renderDashboard(@Req() req, @Res() res) {
+    if(req.auth.teacher.type == 'spec') {
+      return res.redirect('/dashboard/requests/spec');
+    }
+
     const tasks = [];
     /* Cards */
     tasks.push(this.studentsService.getTotalCount());

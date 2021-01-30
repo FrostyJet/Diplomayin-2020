@@ -116,10 +116,12 @@
                                           class="mt-1 p-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"><%= data.problemDescription %></textarea>
                             </div>
 
-                            <div class="col-span-6">
+                            <div class="col-span-6 <%= auth.type != 'admin' ? 'opacity-50' : '' %>">
                                 <label for="type" class="block text-sm font-medium text-gray-700">Կից սոց․
                                     մանկավարժ</label>
-                                <select name="teacherId" id="teacherId" required
+                                <select name="teacherId" id="teacherId" required <%= auth.type != 'admin'
+                                        ? 'disabled'
+                                        : '' %>
                                         class="mt-1 p-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     <% teachers.forEach(teacher => { %>
                                         <option value="<%= teacher.id %>" <%= data.teacherId == teacher.id
@@ -132,12 +134,8 @@
                     </div>
 
                     <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                        <a href="/dashboard/requests/create?studentId=<%= data.id %>"
-                                class="inline-flex mr-2 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                            Ստեղծել Մասնագետի հայտ <i class="las la-stethoscope text-xl ml-2"></i>
-                        </a>
                         <button type="submit"
-                                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-semibold rounded-md text-green-500 border-2 border-green-500 hover:bg-green-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                class="inline-flex mr-2 justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                             Պահպանել <i class="las la-save  text-xl ml-2"></i>
                         </button>
                     </div>
@@ -147,39 +145,93 @@
 
         <!-- Stories -->
         <% if(data.name){ %>
-            <div class="mt-10 bg-white shadow rounded-md p-6 md:col-span-2">
-                <div class="flex justify-between items-center mb-5">
-                    <h4 class="font-semibold text-lg">
-                        <span class="text-yellow-500"><%= data.name.first + ' ' + data.name.last %></span> -ի
-                        Ճգնաժամային
-                        իրավիճակները
-                    </h4>
-
-                    <a href="/dashboard/stories/create?studentId=<%= data.id %>"
-                       class="bg-green-500 py-2 inline-block px-6 focus:outline-none hover:bg-green-600 rounded-lg text-white">
-                        ավելացնել իրավիճակ
-                        <i class="la la-plus float-right ml-2 text-2xl"></i>
-                    </a>
+            <div class="tab-wrapper shadow rounded-md md:col-span-2 mt-10 ">
+                <div class="tab-header">
+                    <section class="active" data-target="#panel1">
+                        <img src="/st/img/i/archive.svg" class="mr-4" width="40"/>
+                        Ճգնաժամային իրավիճակներ
+                    </section>
+                    <section data-target="#panel2">
+                        <img src="/st/img/i/clock.svg" class="mr-4" width="40"/>
+                        Հայտերի պատմություն
+                    </section>
                 </div>
 
-                <% if(!stories.length) { %>
-                    <p class="text-gray-400">Դեռևս չկա ավելացված իրավիճակ ․․․</p>
-                <% }else { %>
-                    <% stories.forEach(story => { %>
-                        <a href="/dashboard/stories/<%= story.id %>"
-                           class="shadow block border hover:border-green-500 p-6 mb-6 bg-white rounded-lg">
-                            <div class="flex justify-between mb-5">
-                                <h4 class="text-2xl font-semibold"><%= story.subject %></h4>
-                                <% if(story.isOpen){ %>
-                                    <b class="text-green-500 bg-green-100 px-3 py-1 rounded-lg">Ընթացքի մեջ է</b>
-                                <% }else { %>
-                                    <b class="text-red-500 bg-red-100 px-3 py-1 rounded-lg">փակված է</b>
-                                <% } %>
-                            </div>
-                            <p><%= story.content.slice(0, 300) %> ...</p>
-                        </a>
-                    <% }) %>
-                <% } %>
+                <div class="tab-panel show" id="panel1">
+                    <div class="bg-white p-6">
+                        <div class="flex justify-between items-center mb-5">
+                            <a href="/dashboard/stories/create?studentId=<%= data.id %>"
+                               class="bg-white py-2 w-full font-semibold text-center border px-6 focus:outline-none hover:bg-green-100 hover:border-green-300 rounded-lg text-green-600 ">
+                                Ավելացնել իրավիճակ
+                                <i class="la la-plus float-right ml-2 text-2xl"></i>
+                            </a>
+                        </div>
+
+                        <% if(!stories.length) { %>
+                            <p class="text-gray-400">Դեռևս չկա ավելացված իրավիճակ ․․․</p>
+                        <% }else { %>
+                            <% stories.forEach(story => { %>
+                                <a href="/dashboard/stories/<%= story.id %>"
+                                   class="shadow block border hover:border-green-500 p-6 mb-6 bg-white rounded-lg">
+                                    <div class="flex justify-between mb-5">
+                                        <h4 class="text-2xl font-semibold"><%= story.subject %></h4>
+                                        <% if(story.isOpen){ %>
+                                            <b class="text-green-500 bg-green-100 px-3 py-1 rounded-lg">Ընթացքի մեջ
+                                                է</b>
+                                        <% }else { %>
+                                            <b class="text-red-500 bg-red-100 px-3 py-1 rounded-lg">փակված է</b>
+                                        <% } %>
+                                    </div>
+                                    <p><%= story.content.slice(0, 300) %> ...</p>
+                                </a>
+                            <% }) %>
+                        <% } %>
+                    </div>
+                </div>
+
+                <div class="tab-panel" id="panel2">
+                    <div class="bg-white p-6">
+                        <div class="flex justify-between items-center mb-5">
+                            <a href="/dashboard/requests/create?studentId=<%= data.id %>"
+                               class="bg-white py-2 w-full font-semibold text-center border px-6 focus:outline-none hover:bg-green-100 hover:border-green-300 rounded-lg text-green-600 ">
+                                Ստեղծել հայտ
+                                <i class="la la-plus float-right ml-2 text-2xl"></i>
+                            </a>
+                        </div>
+
+                        <% requests.forEach(request => { %>
+                            <a href="/dashboard/requests/<%= request.id %>"
+                               class="shadow block border hover:border-blue-500 hover:bg-blue-50 p-6 mb-6 bg-white rounded-lg">
+                                <div class="flex justify-between mb-5">
+                                    <h4 class="text-xl font-semibold">Անհրաժեշտ
+                                        մասնագետ՝ <span
+                                                class="text-blue-400"><%= spec[request.professionId] %></span>
+                                    </h4>
+                                    <h4 class="text-xl font-semibold">Ուսանող՝ <span
+                                                class="text-blue-400"><%= data.name.first + ' ' +
+                                            data.name.last %></span></h4>
+                                    <% if(request.isOpen){ %>
+                                        <% if(request.specId){ %>
+                                            <b class="text-green-500 bg-green-100 px-3 py-1 rounded-lg">Ընթացքի մեջ
+                                                է</b>
+                                        <% }else { %>
+                                            <b class="text-yellow-500 bg-yellow-100 px-3 py-1 rounded-lg">Թափուր է</b>
+                                        <% } %>
+                                    <% }else { %>
+                                        <b class="text-red-500 bg-red-100 px-3 py-1 rounded-lg">փակված է</b>
+                                    <% } %>
+                                </div>
+                                <p><%= request.description.slice(0, 300) %> ...</p>
+
+                                <p class="text-right text-gray-400 mt-5">
+                                    Հրապարակվել է՝ <%= new Intl.DateTimeFormat('am',
+                                            { day: '2-digit', year: 'numeric', month: '2-digit' }).format(
+                                            new Date(request.dateCreated)); %>
+                                </p>
+                            </a>
+                        <% }) %>
+                    </div>
+                </div>
             </div>
         <% } %>
     </div>

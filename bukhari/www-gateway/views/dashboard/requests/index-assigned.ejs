@@ -17,7 +17,7 @@
         <!-- New Table -->
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
 
-            <div class="col-span-2 mb-6">
+            <div class="col-span-2 mb-6 flex justify-between items-center">
                 <div class="breadcrumbs">
                     <ul class="steps shadow rounded-lg">
                         <li class="step">
@@ -26,15 +26,16 @@
                             </a>
                         </li>
                         <li class="step active">
-                            <a href="/dashboard/stories" class="link">
-                                Ճգնաժամային իրավիճակներ
+                            <a href="/dashboard/requests" class="link">
+                                իմ հայտերը
                             </a>
                         </li>
                     </ul>
                 </div>
+
             </div>
 
-            <div class="w-full mt-20 overflow-x-auto">
+            <div class="w-full overflow-x-auto">
                 <form class="filters mb-10 mx-auto text-center">
                     <div class="relative inline-block w-1/2">
                         <div class="absolute inset-y-0 flex items-center pl-2">
@@ -50,36 +51,44 @@
                     </div>
                 </form>
 
-                <% rows.list.forEach(story => { %>
-                    <a href="/dashboard/stories/<%= story.id %>"
-                       class="shadow block border hover:border-green-500 hover:bg-green-50 p-6 mb-6 bg-white rounded-lg">
+                <% if(rows.list.length <= 0){ %>
+                    <img src="/st/img/undraw/empty_green.svg" width="250" class="block mx-auto my-6" />
+                    <p class="py-6 text-gray-600 text-center font-semibold">Այս պահին ընթացիկ <u class="text-red-600"><%= spec[auth.spec] %></u> մասնագիտիության համար հայտեր չկան։</p>
+                <%} else {%>
+                    <% rows.list.forEach(request => { %>
+                    <a href="/dashboard/requests/<%= request.id %>"
+                       class="shadow block border hover:border-blue-500 hover:bg-blue-50 p-6 bg-white rounded-lg mb-6">
                         <div class="flex justify-between mb-5">
-                            <h4 class="text-2xl font-semibold"><%= story.subject %></h4>
-                            <% if(story.isOpen){ %>
-                                <b class="text-green-500 bg-green-100 px-3 py-1 rounded-lg">Ընթացքի մեջ է</b>
+                            <h4 class="text-xl font-semibold">Անհրաժեշտ
+                                մասնագետ՝ <span class="text-blue-400"><%= professions[request.professionId] %></span>
+                            </h4>
+                            <h4 class="text-xl font-semibold">Ուսանող՝ <span
+                                        class="text-blue-400"><%= request.student.name.first + ' ' +
+                                    request.student.name.last %></span></h4>
+                            <% if(request.isOpen){ %>
+                                <b class="text-green-500 bg-green-100 px-3 py-1 rounded-lg pulse green relative">Ընթացքի մեջ է</b>
                             <% }else { %>
                                 <b class="text-red-500 bg-red-100 px-3 py-1 rounded-lg">փակված է</b>
                             <% } %>
                         </div>
-                        <p><%= story.content.slice(0, 300) %> ...</p>
+                        <p><%= request.description.slice(0, 300) %> ...</p>
 
                         <p class="text-right text-gray-400 mt-5">
-                            Հրապարակվել է՝ <%= new Intl.DateTimeFormat('am', {day: '2-digit', year: 'numeric', month: '2-digit'}).format(
-                                    new Date(story.dateCreated)); %>
+                            Հրապարակվել է՝ <%= new Intl.DateTimeFormat('am',
+                                    { day: '2-digit', year: 'numeric', month: '2-digit' }).format(
+                                    new Date(request.dateCreated)); %>
                         </p>
                     </a>
                 <% }) %>
-            </div>
 
-
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+                    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
                 <span class="flex items-center col-span-3">
                   Ցուցադրված է <%= (page - 1) * pageLimit + 1 %> - <%= (page - 1) * pageLimit +
                     rows.list.length %>-ը <%= rows.totalCount %> -ից
                 </span>
-                <span class="col-span-2"></span>
-                <!-- Pagination -->
-                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                            <span class="col-span-2"></span>
+                            <!-- Pagination -->
+                            <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                   <nav aria-label="Table navigation">
                     <ul class="inline-flex items-center">
                         <% if(page > 1) { %>
@@ -101,6 +110,8 @@
                     </ul>
                   </nav>
                 </span>
+                        </div>
+                <%}%>
             </div>
         </div>
     </div>

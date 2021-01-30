@@ -19,7 +19,6 @@
     <% } %>
 
     <div class="container p-6 max-w-7xl ml-4 grid">
-
         <div class="col-span-2 mb-6">
             <div class="breadcrumbs">
                 <ul class="steps shadow rounded-lg">
@@ -29,9 +28,15 @@
                         </a>
                     </li>
                     <li class="step">
-                        <a href="/dashboard/requests" class="link">
-                            Մասնագետի օգնություն
-                        </a>
+                        <% if(auth.type == 'spec'){ %>
+                            <a href="/dashboard/requests/assigned" class="link">
+                                Մասնագետի օգնություն
+                            </a>
+                        <% }else { %>
+                            <a href="/dashboard/requests" class="link">
+                                Մասնագետի օգնություն
+                            </a>
+                        <% } %>
                     </li>
                     <li class="step active">
                         <a href="#" class="link">
@@ -39,10 +44,17 @@
                         </a>
                     </li>
                 </ul>
+
+                <a href="/dashboard/requests/create?studentId=<%= data.student.id %>" class="<%= data.specId == auth.id ? '' : 'opacity-50 cursor-default pointer-events-none' %> float-right px-3 py-1 font-semibold bg-yellow-300 relative border border-yellow-400 rounded-md">
+                    Ուղղորդել
+                    <i class="las la-paper-plane ml-2"></i>
+                </a>
+
+                </button>
             </div>
         </div>
 
-        <% if(data.teacherId == auth.teacher.id){ %>
+        <% if(data.teacherId == auth.id){ %>
             <form id="updateStoryForm" method="post" class="col-span-2 mb-5 bg-white shadow p-6"
                   action="/dashboard/requests/edit/<%= data.id %>">
                 <label class="font-semibold" for="isOpen">Հայտի կարգավիճակը</label>
@@ -62,7 +74,7 @@
         <% } %>
 
         <div class="shadow col-span-2 sm:rounded-md">
-            <div class="px-4 py-5 grid grid-cols-4 bg-white sm:p-6">
+            <div class="px-6 py-5 grid grid-cols-4 bg-white">
                 <section class="col-span-2">
                     <div class="mt-2">
                         <p class="font-semibold">Փնտրվող մասնագետ՝</p>
@@ -83,15 +95,15 @@
                             <div class="px-6 w-full">
                                 <p class="flex justify-between">
                                     <b>Անուն: </b>
-                                    <span class="ml-6"><%= data.student.name.first %></span>
+                                    <a href="/dashboard/students/<%= data.student.id %>" class="ml-6 text-blue-500"><%= data.student.name.first %></a>
                                 </p>
                                 <p class="flex justify-between">
                                     <b>Ազգանուն: </b>
-                                    <span class="ml-6"><%= data.student.name.last %></span>
+                                    <a href="/dashboard/students/<%= data.student.id %>" class="ml-6 text-blue-500"><%= data.student.name.last %></a>
                                 </p>
                                 <p class="flex justify-between">
                                     <b>Հասցե: </b>
-                                    <span class="ml-6"><%= data.student.address %></span>
+                                    <p class="text-right ml-6"><%= data.student.address %></p>
                                 </p>
                             </div>
                         </div>
@@ -100,31 +112,108 @@
             </div>
         </div>
 
-        <div class="shadow mt-5 col-span-2 sm:rounded-md">
-            <div class="px-4 grid grid-cols-4 bg-white sm:p-6">
+        <% if(auth.type == 'spec' && !data.specId){ %>
 
-                <div class="col-span-4">
-                    <h4 class="font-semibold font-xl">Արձագանքներ</h4>
-                </div>
+            <% if(auth.spec == data.professionId){ %>
+            <a href="/dashboard/requests/apply?postId=<%= data.id %>&specId=<%= auth.id %>"
+               class="bg-blue-500  text-white font-semibold py-2 col-span-2 hover:shadow-lg hover:bg-blue-400 text-center my-6 rounded-lg">
+                Դիմել հայտին
+                <i class="las float-right mr-6 mt-1 la-paper-plane"></i>
+            </a>
+            <% } else { %>
+                <p class="text-red-500 font-semibold text-center my-5 col-span-2">
+                    <i class="las la-ban mr-2"></i> Ձեր որակավորումը չի համապատասխանում անհրաժեշտ մասնագետի պահանջներին:</p>
+            <% } %>
 
-                <div class="col-span-4 mt-4">
-                    <% if(data.replies.length) { %>
-                        <% data.replies.forEach(reply => { %>
-                            <div class="bg-gray-100 border border-gray-300 rounded-md mb-2 px-3 py-2">
-                                <div class="flex items-center">
-                                </div>
-                                <p class="mb-3"><b>ԱԱՀ՝ </b> <br> <%= reply.fullname %></p>
-                                <p class="mb-3"><b>Հեռ․ </b> <br> <%= reply.phone %></p>
-                                <p class="mb-3"><b>Էլ․ հասցե </b> <br> <%= reply.email %></p>
-                                <p class="mb-3"><b>Առաջարկ - նամակ </b> <br> <%= reply.message %></p>
-                            </div>
-                        <% }) %>
-                    <% }else { %>
-                        <h4 class="text-gray-400">Դեռևս արձագանք չկա, լցվեք համբերությամբ․․․</h4>
-                    <% } %>
-                </div>
-
+            <div class="text-center col-span-2 mt-10">
+                <img width="300" class="block mx-auto" src="/st/img/undraw/waiting_for_u_yellow.svg"/>
             </div>
-        </div>
+        <% } %>
+
+        <% if(data.spec){ %>
+            <div class="overflow-hidden col-span-2 mt-6 px-6 py-5 shadow bg-white">
+                <div class="flex justify-between">
+                    <div class="leading-tight">
+                        <p class="text-lg mb-6">
+                            Կից մասնագետ՝ &nbsp;
+                            <a class="no-underline hover:underline font-semibold text-yellow-500"
+                               href="/dashboard/teachers/<%= data.spec.id %>">
+                                <%= data.spec.name.first %>
+                                <%= data.spec.name.last %>
+                            </a>
+                        </p>
+
+                        <p class="mb-6">
+                            Մասնագետի աշխատանքը մեկնարկել է՝ <br>
+                            <b class="text-black bg-green-300 px-3 inline-block py-1 mt-2 rounded-md">
+                                <%= new Intl.DateTimeFormat('am',
+                                        { day: '2-digit', year: 'numeric', month: '2-digit' }).format(
+                                        new Date(data.specStart)); %>
+                            </b>
+                        </p>
+
+                        <p class="mb-6">
+                            Մասնագետի աշխատանքը ավարտել է՝ <br>
+                            <b class="text-black bg-yellow-300 px-3 inline-block py-1 mt-2 rounded-md">
+                                <% if(data.specEnd) { %>
+                                    <%= new Intl.DateTimeFormat('am',
+                                            { day: '2-digit', year: 'numeric', month: '2-digit' }).format(
+                                            new Date(data.specEnd)); %>
+                                <% }else { %>
+                                    Ընթացքի մեջ
+                                <% } %>
+                            </b>
+                        </p>
+                    </div>
+
+                    <a href="/dashboard/students/<%= data.spec.id %>">
+                        <img alt="Placeholder" class="block h-auto w-full rounded-md"
+                             src="<%= data.spec.avatar && '/st/media' + data.spec.avatar %>">
+                    </a>
+                </div>
+            </div>
+        <% } %>
+
+        <% if(!data.isOpen){ %>
+            <div class="col-span-2 mt-5 mb-6 bg-white text-center shadow px-4 py-4">
+                <p class="text-yellow-500 text-xl font-bold">Եզրակացություն / Էպիկրիզ՝ </p>
+                <p class="font-semibold mt-6"><%= data.specResult %></p>
+            </div>
+
+            <h1 class="text-green-500 font-semibold col-span-2 mt-6 text-center">
+                <i class="las la-check-circle"></i> Հայտը հանգուցալուծված է
+            </h1>
+        <% } %>
+
+        <% if(data.specId == auth.id){ %>
+            <div class="shadow mt-5 col-span-2 sm:rounded-md <%= data.isOpen
+                    ? ''
+                    : 'disabled opacity-50 cursor-not-allowed pointer-events-none' %>">
+                <div class="px-4 grid grid-cols-4 bg-white sm:p-6">
+
+                    <div class="col-span-4">
+                        <h4 class="font-semibold font-xl">Եզրակացություն / Էպիկրիզ</h4>
+                    </div>
+
+                    <div class="col-span-4">
+                        <form id="commentForm" method="post" action="/dashboard/requests/close">
+                            <div class="mt-4">
+                                <input type="hidden" name="postId" value="<%= data.id %>"/>
+
+                                <textarea rows="5" type="text" id="specResult" name="specResult"
+                                          placeholder="Եզրակացության մեկնաբանում․․․"
+                                          class="mt-1 p-2 bg-gray-100 placeholder-gray-600 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg focus:bg-white focus:placeholder-gray-400"></textarea>
+
+                            </div>
+                            <div class="flex mt-4 justify-end">
+                                <button type="submit"
+                                        class="bg-green-400 hover:bg-green-500 font-semibold rounded-lg border border-green-500 text-white py-2 px-4">
+                                    Փակել հայտը <i class="las la-paper-plane ml-2"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <% } %>
     </div>
 </main>

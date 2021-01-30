@@ -58,7 +58,7 @@ export class StoriesController {
 
     return {
       pageId: 'stories/index',
-      msg, data: story, comments, auth: req.auth,
+      msg, data: story, comments,
     };
   }
 

@@ -3,6 +3,7 @@ import { StudentsService } from './students.service';
 import * as querystring from 'querystring';
 import { TeachersService } from '../teachers/teachers.service';
 import { StoriesService } from '../stories/stories.service';
+import { RequestsService } from '../requests/requests.service';
 
 @Controller('dashboard/students')
 export class StudentsController {
@@ -10,6 +11,7 @@ export class StudentsController {
     private readonly studentsService: StudentsService,
     private readonly teachersService: TeachersService,
     private readonly storiesService: StoriesService,
+    private readonly requestsService: RequestsService,
   ) {
   }
 
@@ -63,10 +65,13 @@ export class StudentsController {
     const msg = req.session.msg;
     req.session.msg = null;
 
-    const stories = await this.storiesService.findByStudentId(req.params.id);
+    const [stories, requests] = await Promise.all([
+      this.storiesService.findByStudentId(req.params.id),
+      this.requestsService.findByStudentId(req.params.id),
+    ]);
 
     return {
-      msg, data, stories,
+      msg, data, stories, requests,
       pageId: 'students/edit', teachers: teachers.list,
     };
   }

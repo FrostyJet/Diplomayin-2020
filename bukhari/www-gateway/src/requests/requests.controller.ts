@@ -14,6 +14,7 @@ export class RequestsController {
   constructor(
     private readonly requestsService: RequestsService,
     private readonly studentsService: StudentsService,
+    private readonly teachersService: TeachersService,
   ) {
   }
 
@@ -29,7 +30,12 @@ export class RequestsController {
     }
 
     if (!student) {
-      students = await this.studentsService.findByTeacherId(req.auth.teacher.id);
+      if (req.auth.teacher.type == 'regular') {
+        students = await this.studentsService.findByTeacherId(req.auth.teacher.id);
+      } else {
+        students = await this.studentsService.findAll({ page: 1, limit: 200, sort: { name: 1 } });
+        students = students.list;
+      }
     }
 
     const msg = req.session.msg;
@@ -42,6 +48,80 @@ export class RequestsController {
     };
   }
 
+  @Get(PREFIX + '/apply')
+  async applyToRequest(@Req() req, @Res() res, @Query() query) {
+    const { specId, postId } = query;
+
+    await this.requestsService.apply({ specId, postId });
+
+    req.session.msg = {
+      type: 'success',
+      text: 'Հայտը ավելացվելց Ձեր ընթացիկ հայտերի բաժնում։',
+    };
+
+    return res.redirect('back');
+  }
+
+  @Post(PREFIX + '/close')
+  async closeToRequest(@Req() req, @Res() res, @Body() query) {
+    const { postId, specResult } = query;
+
+    await this.requestsService.close({ specResult, postId });
+
+    req.session.msg = {
+      type: 'success',
+      text: 'Հայտը հաջողությամբ փակված է',
+    };
+
+    return res.redirect('back');
+  }
+
+  @Get(PREFIX + '/spec')
+  @Render('dashboard/requests/index-spec')
+  async renderSpecList(@Req() req, @Query() query) {
+    const { page = 1 } = query;
+    const filters = { professionId: req.auth.teacher.spec, specId: null };
+    const msg = req.session.msg;
+    req.session.msg = null;
+
+    if (query.search) filters['search'] = query.search;
+
+    const rows = await this.requestsService.findAll({ page, filters: { ...filters }, sort: { 'isOpen': -1 } });
+
+    filters['queryString'] = querystring.stringify(filters);
+
+    return {
+      pageId: 'requests/spec',
+      rows: rows, msg,
+      page, professions: this.professions,
+      pageLimit: 10,
+      filters,
+    };
+  }
+
+  @Get(PREFIX + '/assigned')
+  @Render('dashboard/requests/index-assigned')
+  async renderAssignedList(@Req() req, @Query() query) {
+    const { page = 1 } = query;
+    const filters = { specId: req.auth.teacher.id };
+    const msg = req.session.msg;
+    req.session.msg = null;
+
+    if (query.search) filters['search'] = query.search;
+
+    const rows = await this.requestsService.findAll({ page, filters: { ...filters }, sort: { 'isOpen': -1 } });
+
+    filters['queryString'] = querystring.stringify(filters);
+
+    return {
+      pageId: 'requests/assigned',
+      rows: rows, msg,
+      page, professions: this.professions,
+      pageLimit: 10,
+      filters,
+    };
+  }
+
   @Get(PREFIX + '/:id')
   @Render('dashboard/requests/post')
   async renderSingle(@Req() req, @Query() query) {
@@ -49,21 +129,22 @@ export class RequestsController {
     const msg = req.session.msg;
     req.session.msg = null;
 
-
     const request = await this.requestsService.findById(id);
 
     return {
       pageId: 'requests/index',
-      msg, data: request, auth: req.auth, professions: this.professions,
+      msg, data: request, professions: this.professions,
     };
   }
 
   @Post(PREFIX + '/create')
   async handleCreate(@Req() req, @Res() res, @Body() body) {
+    const student = await this.studentsService.findById(body.studentId);
+
     const data = {
       studentId: body.studentId,
       description: body.description,
-      teacherId: req.auth.teacher.id,
+      teacherId: student.teacherId,
       professionId: body.professionId,
     };
 

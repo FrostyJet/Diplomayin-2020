@@ -63,9 +63,25 @@ function initFileUploader() {
   $('[data-init=afterFilepond]').fadeIn('fast');
 }
 
+function initTabs() {
+
+  $('.tab-wrapper .tab-header > section').click(function() {
+    const wrapper = $(this).parents('.tab-wrapper');
+
+    $(this).siblings('.active').removeClass('active');
+    $(this).addClass('active');
+
+    const target = $(this).attr('data-target');
+
+    wrapper.find('.tab-panel.show').removeClass('show');
+    $(target).addClass('show');
+  });
+}
+
 $(function() {
 
   initFileUploader();
+  initTabs();
 
   $('#avatarTrigger').click(function() {
     $('#uploadModal').removeClass('hidden');

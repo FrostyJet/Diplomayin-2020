@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <% if(data.teacherId == auth.teacher.id){ %>
+        <% if(data.teacherId == auth.id){ %>
             <form id="updateStoryForm" method="post" class="col-span-2 mb-5 bg-white shadow p-6"
                   action="/dashboard/stories/edit/<%= data.id %>">
                 <label class="font-semibold" for="isOpen">Քննարկման կարգավիճակը</label>
@@ -159,7 +159,8 @@
                         <div class="flex mt-4 justify-end">
                             <button type="submit"
                                     class="bg-green-400 hover:bg-green-500 font-semibold rounded-lg border border-green-500 text-white py-2 px-4">
-                                մեկնաբանել <i class="las la-paper-plane ml-2"></i></button>
+                                մեկնաբանել
+                                <i class="las la-paper-plane ml-2"></i></button>
                         </div>
                     </form>
                 </div>

@@ -21,10 +21,10 @@
 <body>
 
 <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
-    <%- partial('../@partial/dashboard-sidebar.ejs') -%>
+    <%- partial('../@partial/dashboard-sidebar-' + auth.type + '.ejs') -%>
 
     <div class="flex flex-col flex-1 w-full">
-        <%- partial('../@partial/dashboard-nav.ejs') -%>
+        <%- partial('../@partial/dashboard-nav-' + auth.type + '.ejs') -%>
 
         <%- body -%>
     </div>

@@ -115,9 +115,9 @@
                                        class="mt-1 p-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
 
-                            <div class="col-span-3">
+                            <div class="col-span-3 <%= auth.type != 'admin' ? 'opacity-50' : '' %>">
                                 <label for="type" class="block text-sm font-medium text-gray-700">Հաշվի տեսակ</label>
-                                <select name="type" id="type"
+                                <select name="type" id="type" <%= auth.type != 'admin' ? 'disabled' : '' %>
                                         class="mt-1 p-2 border-gray-100 border focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     <option value="">-</option>
                                     <% for (let key in accTypes){ %>
