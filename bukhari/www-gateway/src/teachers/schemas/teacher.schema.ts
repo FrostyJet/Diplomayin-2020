@@ -10,7 +10,16 @@ export const ENUM_PROFESSIONS = {
   'psychoanalyst': 'Հոգեվերլուծաբան',
   'art_therapist': 'Արտ թերապեվտ',
   'addiction_counselor': 'կախվածության խորհրդատու',
-  'sport_counselor': 'Կինեզոթերապեվտ / Ֆիզ․ կուլտ․ մասնագետ',
+  'sport_counselor': 'Կինեզոթերապեվտ',
+  'syco_ter': 'Հոգեբույժ',
+  'manual_ter': 'Մանուալ թերապևվտ',
+  'massage': 'Մերսող',
+  'neon': 'Նեոնատոլոգ',
+  'reflex': 'Ռեֆլեքսոտերապևտ',
+  'reabil': 'Ռեաբիլիտոլոգ',
+  'drug': 'Թմրաբան',
+  'intervention': 'Ինտերվենցիոն ճառագայթաբան',
+  'balneo': 'Բալնեոթերապևտ',
   'other': 'այլ',
 };
 
