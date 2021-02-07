@@ -86,7 +86,7 @@ export class RequestsService {
 
   async findByStudentId(studentId: string | Types.ObjectId) {
     if (typeof studentId === 'string') studentId = Types.ObjectId(studentId);
-    return this.requestModule.find({ studentId });
+    return this.requestModule.find({ studentId }).sort({isOpen: -1});
   }
 
   async addReply(requestId: any, data: { phone: any | string; fullname: any | string; message: any; email: any }) {

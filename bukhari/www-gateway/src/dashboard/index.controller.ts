@@ -119,8 +119,6 @@ export class IndexController {
       yearlyStatsResolved, yearlyStatsOpen,
     ] = await Promise.all(tasks);
 
-    console.log(yearlyStatsResolved);
-
     return {
       pageId: 'dashboard/',
       yearlyStatsResolved, yearlyStatsOpen,

@@ -17,24 +17,26 @@ function lineChart(dataSets) {
     return 0;
   })).forEach(x => openArr.push(x.count));
 
+  console.log(openArr);
+
   return {
     type: 'line',
     data: {
-      labels: ['Հուն․', 'Փետր․', 'Մարտ', 'Ապր․', 'Մայ․', 'Հուն․', 'Հուլ․', 'Օգ․', 'Սեպտ․', 'Հոկտ․', 'Նոյ․', 'Դեկտ․'],
+      labels: ['Դեկտ․', 'Հուն․', 'Փետր․', 'Մարտ', 'Ապր․', 'Մայ․', 'Հուն․', 'Հուլ․', 'Օգ․', 'Սեպտ․', 'Հոկտ․', 'Նոյ․', 'Դեկտ․'],
       datasets: [
         {
           label: 'Հանգուցալուծված',
           backgroundColor: '#dc2626',
           borderColor: '#dc2626',
           fill: false,
-          data: openArr,
+          data: resolvedArr,
         },
         {
           label: 'Ընթացքի մեջ',
           fill: false,
           backgroundColor: '#10b981',
           borderColor: '#10b981',
-          data: resolvedArr,
+          data: openArr,
         },
       ],
     },
@@ -79,7 +81,7 @@ function pieChart(pieDataset) {
         {
           data: pieDataset, //[33, 33, 33],
           backgroundColor: ['#dc2626', '#1c64f2', '#10b981'],
-          label: 'Dataset 1',
+          label: 'Ինֆոգրաֆիկա',
         },
       ],
       labels: ['Հանգուցալուծված հայտեր', 'Ընթացքի մեջ', 'Իմ հայտերը'],

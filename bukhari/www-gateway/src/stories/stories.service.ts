@@ -83,7 +83,7 @@ export class StoriesService {
 
   async findByStudentId(studentId: string | Types.ObjectId) {
     if (typeof studentId === 'string') studentId = Types.ObjectId(studentId);
-    return this.storyModel.find({ studentId });
+    return this.storyModel.find({ studentId }).sort({isOpen: -1});
   }
 
   async getTotalCount(filters: any = {}) {

@@ -201,15 +201,13 @@
 
                         <% requests.forEach(request => { %>
                             <a href="/dashboard/requests/<%= request.id %>"
-                               class="shadow block border hover:border-blue-500 hover:bg-blue-50 p-6 mb-6 bg-white rounded-lg">
+                               class="shadow block hover:border-blue-500 hover:bg-blue-50 p-6 mb-6 bg-white rounded-lg
+                                    border-l-8 border">
                                 <div class="flex justify-between mb-5">
                                     <h4 class="text-xl font-semibold">Անհրաժեշտ
                                         մասնագետ՝ <span
                                                 class="text-blue-400"><%= spec[request.professionId] %></span>
                                     </h4>
-                                    <h4 class="text-xl font-semibold">Ուսանող՝ <span
-                                                class="text-blue-400"><%= data.name.first + ' ' +
-                                            data.name.last %></span></h4>
                                     <% if(request.isOpen){ %>
                                         <% if(request.specId){ %>
                                             <b class="text-green-500 bg-green-100 px-3 py-1 rounded-lg">Ընթացքի մեջ
